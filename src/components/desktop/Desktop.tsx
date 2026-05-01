@@ -1,17 +1,18 @@
 import styled from "@emotion/styled";
-import { useCallback, useEffect } from "react";
+import { lazy, Suspense, useCallback } from "react";
 import Wallpaper from "./Wallpaper";
 import DesktopIcon from "./DesktopIcon";
 import WindowFrame from "../window/WindowFrame";
 import ViewerApp from "../viewer/ViewerApp";
-import PdfViewerApp from "../viewer/PdfViewerApp";
-import DataPipelineViewerApp from "../viewer/DataPipelineViewerApp";
-import DataCollectionPipelineViewerApp from "../viewer/DataCollectionPipelineViewerApp";
 import FinderApp from "../finder/FinderApp";
 import FinderToolbar from "../finder/FinderToolbar";
-import SafariApp from "../safari/SafariApp";
 import { useWindows } from "../../hooks/useWindows";
 import { useGlobalStore } from "../../store/useGlobalStore";
+
+const SafariApp = lazy(() => import("../safari/SafariApp"));
+const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
+const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
+const DataCollectionPipelineViewerApp = lazy(() => import("../viewer/DataCollectionPipelineViewerApp"));
 
 const TITLEBAR_H = 52;
 const MAX_WIN_H = 660;
@@ -67,17 +68,6 @@ export default function Desktop() {
     });
   }, [openWindow]);
 
-  // Safari 미리 열기 (iframe 프리로드)
-  useEffect(() => {
-    openWindow({
-      id: "safari-main",
-      kind: "safari",
-      title: "Safari",
-      payload: {},
-      width: 1024,
-      height: 680,
-    });
-  }, []);
 
   const handleDesktopClick = useCallback(() => {
     clearSelection();
@@ -140,20 +130,25 @@ export default function Desktop() {
             </VideoContainer>
           )}
           {win.kind === "safari" && (
-            <SafariApp />
+            <Suspense fallback={null}>
+              <SafariApp />
+            </Suspense>
           )}
           {win.kind === "pdf" && (
-            (win.payload as { hasDocPath?: boolean })?.hasDocPath
-              ? <embed
-                  src={(win.payload as { src: string }).src}
-                  type="application/pdf"
-                  style={{ width: "100%", height: "100%", border: "none" }}
-                />
-              : (win.payload as { file?: string })?.file === "회고-도슨트네비게이션.pdf"
-                ? <DataPipelineViewerApp />
-                : (win.payload as { file?: string })?.file === "설계-데이터파이프라인-좌표수집.pdf"
-                  ? <DataCollectionPipelineViewerApp />
-                  : <PdfViewerApp />
+            <Suspense fallback={null}>
+              {(win.payload as { hasDocPath?: boolean })?.hasDocPath
+                ? <embed
+                    src={(win.payload as { src: string }).src}
+                    type="application/pdf"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                  />
+                : (win.payload as { file?: string })?.file === "회고-도슨트네비게이션.pdf"
+                  ? <DataPipelineViewerApp />
+                  : (win.payload as { file?: string })?.file === "설계-데이터파이프라인-좌표수집.pdf"
+                    ? <DataCollectionPipelineViewerApp />
+                    : <PdfViewerApp />
+              }
+            </Suspense>
           )}
         </WindowFrame>
       ))}

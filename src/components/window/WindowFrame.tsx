@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useCallback, useRef, type ReactNode } from "react";
+import { memo, useCallback, useRef, type ReactNode } from "react";
 import { useWindows } from "../../hooks/useWindows";
 import type { WindowState } from "../../types/window";
 
@@ -10,11 +10,12 @@ interface Props {
   dark?: boolean;
 }
 
-export default function WindowFrame({ win, children, toolbarContent, dark }: Props) {
+export default memo(function WindowFrame({ win, children, toolbarContent, dark }: Props) {
   const { closeWindow, focusWindow, minimizeWindow, toggleMaximize, updatePosition, updateSize } = useWindows();
   const dragging = useRef(false);
   const resizing = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
+  const rafId = useRef(0);
 
   /* ── 타이틀바 드래그 ── */
   const onDragStart = useCallback(
@@ -28,17 +29,21 @@ export default function WindowFrame({ win, children, toolbarContent, dark }: Pro
 
       const onMove = (ev: MouseEvent) => {
         if (!dragging.current) return;
-        updatePosition(win.id, ev.clientX - offset.current.x, ev.clientY - offset.current.y);
+        cancelAnimationFrame(rafId.current);
+        rafId.current = requestAnimationFrame(() => {
+          updatePosition(win.id, ev.clientX - offset.current.x, ev.clientY - offset.current.y);
+        });
       };
       const onUp = () => {
         dragging.current = false;
+        cancelAnimationFrame(rafId.current);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
       };
       window.addEventListener("mousemove", onMove);
       window.addEventListener("mouseup", onUp);
     },
-    [win.id, win.x, win.y, focusWindow, updatePosition]
+    [win.id, win.x, win.y, win.isMaximized, focusWindow, updatePosition]
   );
 
   /* ── 리사이즈 ── */
@@ -54,10 +59,14 @@ export default function WindowFrame({ win, children, toolbarContent, dark }: Pro
 
       const onMove = (ev: MouseEvent) => {
         if (!resizing.current) return;
-        updateSize(win.id, Math.max(300, startW + ev.clientX - startX), Math.max(200, startH + ev.clientY - startY));
+        cancelAnimationFrame(rafId.current);
+        rafId.current = requestAnimationFrame(() => {
+          updateSize(win.id, Math.max(300, startW + ev.clientX - startX), Math.max(200, startH + ev.clientY - startY));
+        });
       };
       const onUp = () => {
         resizing.current = false;
+        cancelAnimationFrame(rafId.current);
         window.removeEventListener("mousemove", onMove);
         window.removeEventListener("mouseup", onUp);
       };
@@ -115,7 +124,7 @@ export default function WindowFrame({ win, children, toolbarContent, dark }: Pro
       <ResizeHandle onMouseDown={onResizeStart} />
     </Frame>
   );
-}
+});
 
 const Frame = styled.div`
   position: fixed;
@@ -129,6 +138,7 @@ const Frame = styled.div`
     0 2px 8px rgba(0, 0, 0, 0.08),
     0 12px 36px rgba(0, 0, 0, 0.18);
   transition: box-shadow 0.2s;
+  will-change: transform;
 
   &[data-focused="false"] {
     box-shadow:

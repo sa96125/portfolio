@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
 
 interface Props {
   label: string;
@@ -9,7 +9,7 @@ interface Props {
   onClick?: () => void;
 }
 
-export default function DockItem({ label, icon, scale = 1, isActive, onClick }: Props) {
+export default memo(function DockItem({ label, icon, scale = 1, isActive, onClick }: Props) {
   return (
     <Wrapper
       onClick={onClick}
@@ -21,7 +21,7 @@ export default function DockItem({ label, icon, scale = 1, isActive, onClick }: 
       {isActive && <Dot />}
     </Wrapper>
   );
-}
+});
 
 const Wrapper = styled.button`
   position: relative;

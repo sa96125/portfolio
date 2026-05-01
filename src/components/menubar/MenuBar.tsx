@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
 import * as Menubar from "@radix-ui/react-menubar";
 import { useGlobalStore } from "../../store/useGlobalStore";
 import { useWindows } from "../../hooks/useWindows";
@@ -68,15 +67,6 @@ export default function MenuBar() {
 
       <Group>
         <StatusItems />
-        <ChatbotTrigger
-          type="button"
-          data-chatbot-trigger
-          data-active={isOpen}
-          onClick={toggleChatbot}
-          aria-label="Toggle Tars AI"
-        >
-          <SiriOrb />
-        </ChatbotTrigger>
       </Group>
     </Bar>
   );
@@ -202,53 +192,3 @@ const ItemDesc = styled.span`
   }
 `;
 
-const ChatbotTrigger = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  background: transparent;
-  border: none;
-  transition:
-    background 0.18s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.08);
-  }
-  &[data-active="true"] {
-    background: rgba(0, 0, 0, 0.12);
-  }
-  &:active {
-    transform: scale(0.92);
-  }
-`;
-
-const orbSpin = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
-
-const SiriOrb = styled.div`
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 107, 157, 0.95), transparent 55%),
-    radial-gradient(circle at 75% 35%, rgba(192, 132, 252, 0.9), transparent 55%),
-    radial-gradient(circle at 50% 75%, rgba(6, 182, 212, 0.85), transparent 60%),
-    conic-gradient(
-      from 0deg,
-      #ff6b9d 0%,
-      #c084fc 25%,
-      #6366f1 50%,
-      #06b6d4 75%,
-      #ff6b9d 100%
-    );
-  box-shadow:
-    0 0 8px rgba(192, 132, 252, 0.55),
-    inset 0 0 4px rgba(255, 255, 255, 0.5);
-  animation: ${orbSpin} 6s linear infinite;
-`;

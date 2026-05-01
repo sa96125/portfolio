@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import DockItem from "./DockItem";
 import { useWindows } from "../../hooks/useWindows";
 
@@ -15,9 +15,24 @@ const PAD = 10;
 const MAGNIFY_RANGE = 130;
 const MAX_SCALE = 1.35;
 
+const APPS: DockApp[] = [
+  { id: "finder", label: "Finder", icon: "/dock-icons/finder.png" },
+  { id: "safari", label: "Safari", icon: "/dock-icons/safari.png" },
+  { id: "vscode", label: "Visual Studio Code", icon: "/dock-icons/vscode.png" },
+  { id: "docker", label: "Docker", icon: "/dock-icons/docker.png" },
+  { id: "claude", label: "Claude", icon: "/dock-icons/claude.png" },
+  { id: "intellij", label: "IntelliJ IDEA", icon: "/dock-icons/intellij.png" },
+  { id: "datagrip", label: "DataGrip", icon: "/dock-icons/datagrip.png" },
+  { id: "photos", label: "사진", icon: "/dock-icons/photos.png" },
+  { id: "notes", label: "메모", icon: "/dock-icons/notes.png" },
+  { id: "music", label: "음악", icon: "/dock-icons/music.png" },
+  { id: "settings", label: "시스템 설정", icon: "/dock-icons/settings.png" },
+];
+
 export default function Dock() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mouseX, setMouseX] = useState<number | null>(null);
+  const rafId = useRef(0);
   const { openWindow } = useWindows();
 
   const handleAppClick = useCallback(
@@ -45,27 +60,25 @@ export default function Dock() {
     [openWindow]
   );
 
-  const apps: DockApp[] = [
-    { id: "finder", label: "Finder", icon: "/dock-icons/finder.png" },
-    { id: "safari", label: "Safari", icon: "/dock-icons/safari.png" },
-    { id: "vscode", label: "Visual Studio Code", icon: "/dock-icons/vscode.png" },
-    { id: "docker", label: "Docker", icon: "/dock-icons/docker.png" },
-    { id: "claude", label: "Claude", icon: "/dock-icons/claude.png" },
-    { id: "intellij", label: "IntelliJ IDEA", icon: "/dock-icons/intellij.png" },
-    { id: "datagrip", label: "DataGrip", icon: "/dock-icons/datagrip.png" },
-    { id: "photos", label: "사진", icon: "/dock-icons/photos.png" },
-    { id: "notes", label: "메모", icon: "/dock-icons/notes.png" },
-    { id: "music", label: "음악", icon: "/dock-icons/music.png" },
-    { id: "settings", label: "시스템 설정", icon: "/dock-icons/settings.png" },
-  ];
+  // Stable click handlers per app id
+  const clickHandlers = useMemo(
+    () => Object.fromEntries(APPS.map((app) => [app.id, () => handleAppClick(app.id)])),
+    [handleAppClick]
+  );
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setMouseX(e.clientX - rect.left);
+    const clientX = e.clientX;
+    cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(() => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      setMouseX(clientX - rect.left);
+    });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
+    cancelAnimationFrame(rafId.current);
     setMouseX(null);
   }, []);
 
@@ -85,13 +98,13 @@ export default function Dock() {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        {apps.map((app, i) => (
+        {APPS.map((app, i) => (
           <DockItem
             key={app.id}
             label={app.label}
             icon={<AppIcon src={app.icon} alt={app.label} draggable={false} />}
             scale={getScale(i)}
-            onClick={() => handleAppClick(app.id)}
+            onClick={clickHandlers[app.id]}
           />
         ))}
       </Glass>
@@ -133,4 +146,3 @@ const AppIcon = styled.img`
   user-select: none;
   pointer-events: none;
 `;
-

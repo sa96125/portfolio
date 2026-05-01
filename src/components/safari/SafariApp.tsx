@@ -160,23 +160,18 @@ export default function SafariApp() {
       </AddressBar>
 
       <IframeArea>
-        {tabs.map((tab) =>
-          tab.url ? (
-            <StyledIframe
-              key={tab.id}
-              src={tab.url}
-              title={tab.title}
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-              style={{ display: tab.id === activeTabId ? "block" : "none" }}
-            />
-          ) : (
-            tab.id === activeTabId && (
-              <EmptyPage key={tab.id}>
-                <EmptyText>새 탭</EmptyText>
-                <EmptySub>주소창에 URL을 입력하세요</EmptySub>
-              </EmptyPage>
-            )
-          )
+        {activeTab?.url ? (
+          <StyledIframe
+            key={activeTab.id}
+            src={activeTab.url}
+            title={activeTab.title}
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+          />
+        ) : (
+          <EmptyPage>
+            <EmptyText>새 탭</EmptyText>
+            <EmptySub>주소창에 URL을 입력하세요</EmptySub>
+          </EmptyPage>
         )}
       </IframeArea>
     </Wrapper>

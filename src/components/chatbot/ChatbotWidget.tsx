@@ -11,6 +11,11 @@ export default function ChatbotWidget() {
   const addMessage = useGlobalStore((s) => s.addMessage);
   const panelRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
+  const replyTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    return () => clearTimeout(replyTimer.current);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -33,7 +38,8 @@ export default function ChatbotWidget() {
       setIsTyping(true);
 
       // dummy AI response
-      setTimeout(() => {
+      clearTimeout(replyTimer.current);
+      replyTimer.current = setTimeout(() => {
         addMessage(
           "assistant",
           "감사합니다! 아직 AI 연동 전이라 더미 응답이에요. 곧 실제 답변을 드릴 수 있도록 준비하겠습니다."

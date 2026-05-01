@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Message } from "../../store/useGlobalStore";
@@ -7,7 +8,7 @@ interface Props {
   message: Message;
 }
 
-export default function MessageBubble({ message }: Props) {
+export default memo(function MessageBubble({ message }: Props) {
   const isSent = message.role === "user";
 
   return (
@@ -19,7 +20,7 @@ export default function MessageBubble({ message }: Props) {
       </Bubble>
     </Row>
   );
-}
+});
 
 const Row = styled.div`
   display: flex;
