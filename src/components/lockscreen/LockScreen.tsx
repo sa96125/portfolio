@@ -249,5 +249,5 @@ const BarFill = styled.div`
   height: 100%;
   border-radius: 2.5px;
   background: #fff;
-  transition: width 1s linear;
+  transition: width 0.15s linear;
 `;
