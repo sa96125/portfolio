@@ -12,17 +12,6 @@ export default function Notification({ show, onClose }: Props) {
   const [exiting, setExiting] = useState(false);
   const exitTimer = useRef<ReturnType<typeof setTimeout>>();
 
-  useEffect(() => {
-    if (show) {
-      const timer = setTimeout(() => setVisible(true), 800);
-      return () => clearTimeout(timer);
-    }
-  }, [show]);
-
-  useEffect(() => {
-    return () => clearTimeout(exitTimer.current);
-  }, []);
-
   const dismiss = useCallback(() => {
     setExiting(true);
     clearTimeout(exitTimer.current);
@@ -33,6 +22,24 @@ export default function Notification({ show, onClose }: Props) {
     }, 300);
   }, [onClose]);
 
+  useEffect(() => {
+    if (show) {
+      const timer = setTimeout(() => setVisible(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [show]);
+
+  // 5초 후 자동 닫힘
+  useEffect(() => {
+    if (!visible) return;
+    const autoClose = setTimeout(() => dismiss(), 5000);
+    return () => clearTimeout(autoClose);
+  }, [visible, dismiss]);
+
+  useEffect(() => {
+    return () => clearTimeout(exitTimer.current);
+  }, []);
+
   if (!visible) return null;
 
   return (
@@ -42,14 +49,10 @@ export default function Notification({ show, onClose }: Props) {
           <path d="M1,1 L7,7 M7,1 L1,7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
       </CloseBtn>
-      <IconArea>
-        <TarsIcon src="/tars.gif" alt="Tars AI" draggable={false} />
-      </IconArea>
+      <TarsIcon src="/tars.gif" alt="Tars AI" draggable={false} />
       <TextArea>
         <Title>Tars AI</Title>
-        <Body>
-          최적의 경험을 위해, 전체화면으로 보시는 걸 추천드려요.
-        </Body>
+        <Body>최적의 경험을 위해 전체화면을 추천드려요.</Body>
         <Shortcut>Windows: F11 &nbsp;|&nbsp; Mac: ⌃⌘F</Shortcut>
       </TextArea>
     </Banner>
@@ -66,17 +69,16 @@ const slideOut = keyframes`
   to   { transform: translateX(calc(100% + 20px)); opacity: 0; }
 `;
 
-
 const Banner = styled.div`
   position: fixed;
   top: 40px;
   right: 16px;
   z-index: 1500;
-  width: 340px;
+  width: 360px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 10px 14px;
   border-radius: 14px;
   background: rgba(30, 30, 32, 0.82);
   backdrop-filter: blur(40px) saturate(180%);
@@ -114,22 +116,12 @@ const CloseBtn = styled.button`
   }
 `;
 
-const IconArea = styled.div`
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const TarsIcon = styled.img`
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const TextArea = styled.div`
@@ -141,17 +133,17 @@ const Title = styled.div`
   font-size: 13px;
   font-weight: 600;
   color: #f5f5f7;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 `;
 
 const Body = styled.div`
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.5;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.4;
 `;
 
 const Shortcut = styled.div`
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
-  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
 `;
