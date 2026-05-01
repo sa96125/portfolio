@@ -26,7 +26,7 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/settings.png",
 ];
 
-const MIN_DURATION = 6000;
+const MIN_DURATION = 4500;
 
 function preloadImage(src: string): Promise<void> {
   return new Promise((resolve) => {
@@ -86,7 +86,7 @@ export default function LockScreen({ onUnlock }: Props) {
         setTimeout(() => {
           setUnlocking(true);
           setTimeout(onUnlock, 600);
-        }, 500);
+        }, 300);
         return;
       }
 
