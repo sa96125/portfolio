@@ -76,14 +76,12 @@ export default function LockScreen({ onUnlock }: Props) {
 
     const tick = () => {
       const elapsed = performance.now() - start;
-      // 시간 기반 상한: ease-out 커브로 MIN_DURATION에 걸쳐 0→1
-      const timeCap = Math.min(elapsed / MIN_DURATION, 1);
-      const eased = 1 - (1 - timeCap) ** 2.5;
+      const t = Math.min(elapsed / MIN_DURATION, 1);
 
-      // 시간 커브를 기본으로 깔되, 리소스가 앞서면 그쪽을 따라감
-      const visual = Math.max(eased, Math.min(realProgress.current, eased + 0.1));
+      // 거의 linear에 가깝지만 시작·끝만 살짝 부드러운 커브
+      const eased = t < 0.02 ? t * 25 * t : t;
 
-      if (resourcesDone.current && timeCap >= 1) {
+      if (resourcesDone.current && t >= 1) {
         setProgress(1);
         setTimeout(() => {
           setUnlocking(true);
@@ -92,7 +90,7 @@ export default function LockScreen({ onUnlock }: Props) {
         return;
       }
 
-      setProgress(visual);
+      setProgress(resourcesDone.current ? Math.max(eased, realProgress.current) : eased);
       rafRef.current = requestAnimationFrame(tick);
     };
 
