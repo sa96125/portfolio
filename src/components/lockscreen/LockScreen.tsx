@@ -26,7 +26,7 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/settings.png",
 ];
 
-const MIN_DURATION = 3000;
+const MIN_DURATION = 6000;
 
 function preloadImage(src: string): Promise<void> {
   return new Promise((resolve) => {
