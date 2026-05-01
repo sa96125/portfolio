@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import type { WindowState, WindowKind } from "../types/window";
+import type { WindowState, WindowKind, WindowPayload } from "../types/window";
+import { MENU_H, DOCK_H } from "../types/window";
 
 let nextZ = 100;
 let cascadeStep = 0;
@@ -10,7 +11,7 @@ interface WindowsState {
     id: string;
     kind: WindowKind;
     title: string;
-    payload?: unknown;
+    payload?: WindowPayload;
     width?: number;
     height?: number;
   }) => void;
@@ -25,15 +26,13 @@ interface WindowsState {
 export const useWindows = create<WindowsState>((set, get) => ({
   windows: [],
 
-  openWindow: ({ id, kind, title, payload, width = 700, height = 500 }) => {
+  openWindow: ({ id, kind, title, payload = {}, width = 700, height = 500 }) => {
     const existing = get().windows.find((w) => w.id === id);
     if (existing) {
       get().focusWindow(id);
       return;
     }
 
-    const MENU_H = 28;
-    const DOCK_H = 78;
     let ox: number;
     let oy: number;
 
@@ -48,7 +47,6 @@ export const useWindows = create<WindowsState>((set, get) => ({
       oy = baseY + cascadeStep * CASCADE_OFFSET;
       cascadeStep += 1;
 
-      // 화면 밖으로 나가면 리셋
       if (ox + width > window.innerWidth - 40 || oy + height > window.innerHeight - DOCK_H - 20) {
         cascadeStep = 0;
         ox = baseX;
@@ -56,7 +54,6 @@ export const useWindows = create<WindowsState>((set, get) => ({
       }
     }
 
-    // 메뉴바 위로 올라가지 않도록
     oy = Math.max(oy, MENU_H);
 
     nextZ += 1;
@@ -123,20 +120,16 @@ export const useWindows = create<WindowsState>((set, get) => ({
       windows: s.windows.map((w) => {
         if (w.id !== id) return w;
         if (w.isMaximized) {
-          // 원래 크기로 복원 (저장해둔 값 사용)
-          const prev = (w as any)._prev ?? { x: w.x, y: w.y, width: w.width, height: w.height };
+          const prev = w._prev ?? { x: w.x, y: w.y, width: w.width, height: w.height };
           return { ...w, ...prev, isMaximized: false, _prev: undefined };
         }
-        // 최대화: 메뉴바(28px) 아래 ~ 독(78px) 위
-        const menuH = 28;
-        const dockH = 78;
         return {
           ...w,
           _prev: { x: w.x, y: w.y, width: w.width, height: w.height },
           x: 0,
-          y: menuH,
+          y: MENU_H,
           width: window.innerWidth,
-          height: window.innerHeight - menuH - dockH,
+          height: window.innerHeight - MENU_H - DOCK_H,
           isMaximized: true,
         };
       }),

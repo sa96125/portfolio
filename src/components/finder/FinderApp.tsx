@@ -5,6 +5,7 @@ import { Lock } from "lucide-react";
 import { useWindows } from "../../hooks/useWindows";
 import { SIDEBAR_SECTIONS, FOLDER_CONTENTS } from "../../data/finderData";
 import type { FileItem } from "../../data/finderData";
+import { TITLEBAR_H, MAX_WIN_H, MAX_WIN_W } from "../../types/window";
 
 const DBLCLICK_DELAY = 400;
 
@@ -36,10 +37,8 @@ export default function FinderApp() {
         const src = item.docPath ? `/docs/${item.docPath}` : item.name;
         const img = new window.Image();
         img.src = src;
+        img.onerror = () => {};
         img.onload = () => {
-          const TITLEBAR_H = 52;
-          const MAX_WIN_H = 660;
-          const MAX_WIN_W = 1000;
           const ratio = img.width / img.height;
           let contentH = Math.min(img.height, MAX_WIN_H - TITLEBAR_H);
           let contentW = Math.round(contentH * ratio);

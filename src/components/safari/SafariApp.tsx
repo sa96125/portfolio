@@ -80,14 +80,20 @@ export default function SafariApp() {
         if (!/^https?:\/\//i.test(url)) {
           url = "https://" + url;
         }
-        setTabs((prev) =>
-          prev.map((t) =>
-            t.id === activeTabId
-              ? { ...t, url, title: new URL(url).hostname }
-              : t
-          )
-        );
-        setAddressValue(url);
+        try {
+          const parsed = new URL(url);
+          if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return;
+          setTabs((prev) =>
+            prev.map((t) =>
+              t.id === activeTabId
+                ? { ...t, url: parsed.href, title: parsed.hostname }
+                : t
+            )
+          );
+          setAddressValue(parsed.href);
+        } catch {
+          return;
+        }
         addressRef.current?.blur();
       }
     },
@@ -165,7 +171,7 @@ export default function SafariApp() {
             key={activeTab.id}
             src={activeTab.url}
             title={activeTab.title}
-            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            sandbox="allow-scripts allow-popups allow-forms"
           />
         ) : (
           <EmptyPage>

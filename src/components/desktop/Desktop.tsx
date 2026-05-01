@@ -8,14 +8,12 @@ import FinderApp from "../finder/FinderApp";
 import FinderToolbar from "../finder/FinderToolbar";
 import { useWindows } from "../../hooks/useWindows";
 import { useGlobalStore } from "../../store/useGlobalStore";
+import { TITLEBAR_H, MAX_WIN_H } from "../../types/window";
 
 const SafariApp = lazy(() => import("../safari/SafariApp"));
 const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
 const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
 const DataCollectionPipelineViewerApp = lazy(() => import("../viewer/DataCollectionPipelineViewerApp"));
-
-const TITLEBAR_H = 52;
-const MAX_WIN_H = 660;
 
 export default function Desktop() {
   const { windows, openWindow } = useWindows();
@@ -24,6 +22,7 @@ export default function Desktop() {
   const handleOpenImage = useCallback(() => {
     const img = new Image();
     img.src = "/docs/desktop_내사랑.jpeg";
+    img.onerror = () => {};
     img.onload = () => {
       const ratio = img.width / img.height;
       const contentH = Math.min(img.height, MAX_WIN_H - TITLEBAR_H);
@@ -42,6 +41,7 @@ export default function Desktop() {
   const handleOpenVideo = useCallback(() => {
     const vid = document.createElement("video");
     vid.src = "/docs/desktop_딸내미.mp4";
+    vid.onerror = () => {};
     vid.onloadedmetadata = () => {
       const ratio = vid.videoWidth / vid.videoHeight;
       const contentH = Math.min(vid.videoHeight, MAX_WIN_H - TITLEBAR_H);
@@ -102,7 +102,6 @@ export default function Desktop() {
         </IconArea>
       </DesktopArea>
 
-      {/* 열린 창들 렌더링 */}
       {windows.map((win) => (
         <WindowFrame
           key={win.id}
@@ -112,7 +111,7 @@ export default function Desktop() {
         >
           {win.kind === "viewer" && (
             <ViewerApp
-              src={(win.payload as { src: string }).src}
+              src={win.payload.src ?? ""}
               alt={win.title}
             />
           )}
@@ -122,7 +121,7 @@ export default function Desktop() {
           {win.kind === "video" && (
             <VideoContainer>
               <video
-                src={(win.payload as { src: string }).src}
+                src={win.payload.src ?? ""}
                 controls
                 autoPlay
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -136,15 +135,15 @@ export default function Desktop() {
           )}
           {win.kind === "pdf" && (
             <Suspense fallback={null}>
-              {(win.payload as { hasDocPath?: boolean })?.hasDocPath
+              {win.payload.hasDocPath
                 ? <embed
-                    src={(win.payload as { src: string }).src}
+                    src={win.payload.src ?? ""}
                     type="application/pdf"
                     style={{ width: "100%", height: "100%", border: "none" }}
                   />
-                : (win.payload as { file?: string })?.file === "회고-도슨트네비게이션.pdf"
+                : win.payload.file === "회고-도슨트네비게이션.pdf"
                   ? <DataPipelineViewerApp />
-                  : (win.payload as { file?: string })?.file === "설계-데이터파이프라인-좌표수집.pdf"
+                  : win.payload.file === "설계-데이터파이프라인-좌표수집.pdf"
                     ? <DataCollectionPipelineViewerApp />
                     : <PdfViewerApp />
               }
