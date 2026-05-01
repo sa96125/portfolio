@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface Props {
   onUnlock: () => void;
@@ -26,6 +26,8 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/settings.png",
 ];
 
+const MIN_DURATION = 3000;
+
 function preloadImage(src: string): Promise<void> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -40,30 +42,59 @@ export default function LockScreen({ onUnlock }: Props) {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [unlocking, setUnlocking] = useState(false);
+  const realProgress = useRef(0);
+  const resourcesDone = useRef(false);
+  const rafRef = useRef(0);
 
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
+  useEffect(() => {
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
   const handleClick = useCallback(() => {
     if (loading || unlocking) return;
     setLoading(true);
+    realProgress.current = 0;
+    resourcesDone.current = false;
 
     let loaded = 0;
     const total = PRELOAD_RESOURCES.length;
 
-    const promises = PRELOAD_RESOURCES.map((src) =>
+    PRELOAD_RESOURCES.forEach((src) =>
       preloadImage(src).then(() => {
         loaded++;
-        setProgress(loaded / total);
+        realProgress.current = loaded / total;
+        if (loaded === total) resourcesDone.current = true;
       })
     );
 
-    Promise.all(promises).then(() => {
-      setUnlocking(true);
-      setTimeout(onUnlock, 600);
-    });
+    const start = performance.now();
+
+    const tick = () => {
+      const elapsed = performance.now() - start;
+      // 시간 기반 상한: ease-out 커브로 MIN_DURATION에 걸쳐 0→1
+      const timeCap = Math.min(elapsed / MIN_DURATION, 1);
+      const eased = 1 - (1 - timeCap) ** 2.5;
+
+      // 실제 로드 진행률과 시간 상한 중 작은 쪽을 따라감
+      const visual = Math.min(realProgress.current, eased);
+
+      if (resourcesDone.current && timeCap >= 1) {
+        setProgress(1);
+        setUnlocking(true);
+        setTimeout(onUnlock, 600);
+        return;
+      }
+
+      setProgress(visual);
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
   }, [loading, unlocking, onUnlock]);
 
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
