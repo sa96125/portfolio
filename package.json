@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview --host 0.0.0.0 --port ${PORT:-4173}"
+    "start": "serve dist -s -l ${PORT:-3000}"
   },
   "dependencies": {
     "@assistant-ui/react": "^0.11.52",
@@ -24,6 +24,7 @@
     "react-markdown": "^10.1.0",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
+    "serve": "^14.2.6",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
