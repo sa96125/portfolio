@@ -75,12 +75,7 @@ export default function LockScreen({ onUnlock }: Props) {
     const start = performance.now();
 
     const tick = () => {
-      const elapsed = performance.now() - start;
-      const t = Math.min(elapsed / MIN_DURATION, 1);
-      const real = realProgress.current;
-
-      // 시간 커브(40%)와 실제 네트워크 진행률(60%)을 블렌딩
-      const blended = t * 0.4 + real * 0.6;
+      const t = Math.min((performance.now() - start) / MIN_DURATION, 1);
 
       if (resourcesDone.current && t >= 1) {
         setProgress(1);
@@ -91,7 +86,8 @@ export default function LockScreen({ onUnlock }: Props) {
         return;
       }
 
-      setProgress(blended);
+      // 리소스 미완료 시 95%에서 대기, 완료 시 시간 따라 100%까지
+      setProgress(resourcesDone.current ? t : Math.min(t, 0.95));
       rafRef.current = requestAnimationFrame(tick);
     };
 
