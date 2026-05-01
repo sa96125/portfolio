@@ -85,8 +85,10 @@ export default function LockScreen({ onUnlock }: Props) {
 
       if (resourcesDone.current && timeCap >= 1) {
         setProgress(1);
-        setUnlocking(true);
-        setTimeout(onUnlock, 600);
+        setTimeout(() => {
+          setUnlocking(true);
+          setTimeout(onUnlock, 600);
+        }, 500);
         return;
       }
 
