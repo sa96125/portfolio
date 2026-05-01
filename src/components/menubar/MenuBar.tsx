@@ -2,11 +2,14 @@ import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import * as Menubar from "@radix-ui/react-menubar";
 import { useGlobalStore } from "../../store/useGlobalStore";
+import { useWindows } from "../../hooks/useWindows";
 import StatusItems from "./StatusItems";
 
 export default function MenuBar() {
   const isOpen = useGlobalStore((s) => s.isChatbotOpen);
   const toggleChatbot = useGlobalStore((s) => s.toggleChatbot);
+  const openInSafari = useGlobalStore((s) => s.openInSafari);
+  const { openWindow } = useWindows();
 
   return (
     <Bar>
@@ -16,11 +19,17 @@ export default function MenuBar() {
             <Trigger style={{ fontWeight: 600 }}>Jongseung Park</Trigger>
             <Menubar.Portal>
               <Content sideOffset={6}>
-                <Item onSelect={() => useGlobalStore.getState().openAbout()}>
-                  이 사이트 소개
-                </Item>
-                <Separator />
-                <Item onSelect={() => window.open("https://github.com", "_blank")}>
+                <Item onSelect={() => {
+                  openInSafari("https://github.com/sa96125/");
+                  openWindow({
+                    id: "safari-main",
+                    kind: "safari",
+                    title: "Safari",
+                    payload: {},
+                    width: 1024,
+                    height: 680,
+                  });
+                }}>
                   GitHub
                 </Item>
                 <Item onSelect={() => window.location.assign("mailto:sa96125@gmail.com")}>
@@ -31,33 +40,14 @@ export default function MenuBar() {
           </Menubar.Menu>
 
           <Menubar.Menu>
-            <Trigger>파일</Trigger>
-            <Menubar.Portal>
-              <Content sideOffset={6}>
-                <Item disabled>
-                  새 폴더<Shortcut>⇧⌘N</Shortcut>
-                </Item>
-                <Item disabled>
-                  열기...<Shortcut>⌘O</Shortcut>
-                </Item>
-                <Separator />
-                <Item disabled>
-                  닫기<Shortcut>⌘W</Shortcut>
-                </Item>
-              </Content>
-            </Menubar.Portal>
-          </Menubar.Menu>
-
-          <Menubar.Menu>
-            <Trigger>보기</Trigger>
+            <Trigger>실행</Trigger>
             <Menubar.Portal>
               <Content sideOffset={6}>
                 <Item onSelect={toggleChatbot}>
-                  {isOpen ? "챗봇 닫기" : "챗봇 열기"}
-                </Item>
-                <Separator />
-                <Item onSelect={() => window.location.reload()}>
-                  새로고침<Shortcut>⌘R</Shortcut>
+                  <ItemContent>
+                    <ItemLabel>{isOpen ? "Tars AI 닫기" : "Tars AI 열기"}</ItemLabel>
+                    <ItemDesc>프로젝트에 대해 질문할 수 있는 AI 어시스턴트</ItemDesc>
+                  </ItemContent>
                 </Item>
               </Content>
             </Menubar.Portal>
@@ -67,7 +57,9 @@ export default function MenuBar() {
             <Trigger>도움말</Trigger>
             <Menubar.Portal>
               <Content sideOffset={6}>
-                <Item disabled>도움말 — 준비 중</Item>
+                <Item onSelect={() => useGlobalStore.getState().openAbout()}>
+                  이 사이트 소개
+                </Item>
               </Content>
             </Menubar.Portal>
           </Menubar.Menu>
@@ -81,7 +73,7 @@ export default function MenuBar() {
           data-chatbot-trigger
           data-active={isOpen}
           onClick={toggleChatbot}
-          aria-label="Toggle Siri"
+          aria-label="Toggle Tars AI"
         >
           <SiriOrb />
         </ChatbotTrigger>
@@ -190,23 +182,24 @@ const Item = styled(Menubar.Item)`
   }
 `;
 
-const Shortcut = styled.span`
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.35);
-  margin-left: 24px;
 
-  [data-highlighted] > & {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  [data-disabled] > & {
-    color: rgba(255, 255, 255, 0.15);
-  }
+const ItemContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `;
 
-const Separator = styled(Menubar.Separator)`
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 4px 10px;
+const ItemLabel = styled.span`
+  font-size: 13px;
+`;
+
+const ItemDesc = styled.span`
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+
+  [data-highlighted] & {
+    color: rgba(255, 255, 255, 0.7);
+  }
 `;
 
 const ChatbotTrigger = styled.button`

@@ -47,7 +47,7 @@ export default function ChatbotWidget() {
   return (
     <Panel ref={panelRef} data-open={isOpen} aria-hidden={!isOpen}>
       <Header>
-        <HeaderTitle>메시지</HeaderTitle>
+        <HeaderTitle>Tars AI</HeaderTitle>
         <CloseBtn type="button" onClick={closeChatbot} aria-label="닫기">
           <X size={14} />
         </CloseBtn>

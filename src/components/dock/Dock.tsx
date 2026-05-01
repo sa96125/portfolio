@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useCallback, useRef, useState } from "react";
 import DockItem from "./DockItem";
+import { useWindows } from "../../hooks/useWindows";
 
 interface DockApp {
   id: string;
@@ -12,11 +13,37 @@ const ICON_SIZE = 50;
 const GAP = 4;
 const PAD = 10;
 const MAGNIFY_RANGE = 130;
-const MAX_SCALE = 1.6;
+const MAX_SCALE = 1.35;
 
 export default function Dock() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mouseX, setMouseX] = useState<number | null>(null);
+  const { openWindow } = useWindows();
+
+  const handleAppClick = useCallback(
+    (id: string) => {
+      if (id === "finder") {
+        openWindow({
+          id: "finder-projects",
+          kind: "finder",
+          title: "프로젝트",
+          payload: { folderId: "projects" },
+          width: 860,
+          height: 540,
+        });
+      } else if (id === "safari") {
+        openWindow({
+          id: "safari-main",
+          kind: "safari",
+          title: "Safari",
+          payload: {},
+          width: 1024,
+          height: 680,
+        });
+      }
+    },
+    [openWindow]
+  );
 
   const apps: DockApp[] = [
     { id: "finder", label: "Finder", icon: "/dock-icons/finder.png" },
@@ -64,6 +91,7 @@ export default function Dock() {
             label={app.label}
             icon={<AppIcon src={app.icon} alt={app.label} draggable={false} />}
             scale={getScale(i)}
+            onClick={() => handleAppClick(app.id)}
           />
         ))}
       </Glass>

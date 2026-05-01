@@ -28,13 +28,10 @@ export default function AboutModal() {
         </TrafficLights>
 
         <Body>
-          {/* 비주얼 */}
-          <Laptop>
-            <Screen />
-            <Base />
-          </Laptop>
+          {/* 프로필 사진 */}
+          <ProfilePhoto src="/docs/박종승_여권사진.jpg" alt="박종승" draggable={false} />
 
-          <Name>Jongseung Park</Name>
+          <Name>박종승</Name>
           <Role>Full-Stack Engineer</Role>
 
           {/* 소개 */}
@@ -132,55 +129,16 @@ const Body = styled.div`
   align-items: center;
 `;
 
-/* ── 노트북 비주얼 ── */
+/* ── 프로필 사진 ── */
 
-const Laptop = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const ProfilePhoto = styled.img`
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
   margin-bottom: 20px;
-`;
-
-const Screen = styled.div`
-  width: 120px;
-  height: 78px;
-  background: linear-gradient(180deg, #7ec8e3 0%, #a8d8ea 100%);
-  border-radius: 4px 4px 0 0;
-  border: 3px solid #3a3a3c;
-  border-bottom: none;
-  position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 3px;
-    border-radius: 2px 2px 0 0;
-    background: #2c2c2e;
-  }
-`;
-
-const Base = styled.div`
-  width: 140px;
-  height: 6px;
-  background: linear-gradient(180deg, #5a5a5e, #3a3a3c);
-  border-radius: 0 0 4px 4px;
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 0 0 2px 2px;
-  }
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 `;
 
 /* ── 텍스트 ── */

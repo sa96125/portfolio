@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import Wallpaper from "./Wallpaper";
 import DesktopIcon from "./DesktopIcon";
 import WindowFrame from "../window/WindowFrame";
@@ -9,6 +9,7 @@ import DataPipelineViewerApp from "../viewer/DataPipelineViewerApp";
 import DataCollectionPipelineViewerApp from "../viewer/DataCollectionPipelineViewerApp";
 import FinderApp from "../finder/FinderApp";
 import FinderToolbar from "../finder/FinderToolbar";
+import SafariApp from "../safari/SafariApp";
 import { useWindows } from "../../hooks/useWindows";
 import { useGlobalStore } from "../../store/useGlobalStore";
 
@@ -66,6 +67,18 @@ export default function Desktop() {
     });
   }, [openWindow]);
 
+  // Safari 미리 열기 (iframe 프리로드)
+  useEffect(() => {
+    openWindow({
+      id: "safari-main",
+      kind: "safari",
+      title: "Safari",
+      payload: {},
+      width: 1024,
+      height: 680,
+    });
+  }, []);
+
   const handleDesktopClick = useCallback(() => {
     clearSelection();
   }, [clearSelection]);
@@ -104,7 +117,7 @@ export default function Desktop() {
         <WindowFrame
           key={win.id}
           win={win}
-          dark={win.kind === "finder" || win.kind === "viewer" || win.kind === "pdf" || win.kind === "video"}
+          dark={win.kind === "finder" || win.kind === "viewer" || win.kind === "pdf" || win.kind === "video" || win.kind === "safari"}
           toolbarContent={win.kind === "finder" ? <FinderToolbar /> : undefined}
         >
           {win.kind === "viewer" && (
@@ -125,6 +138,9 @@ export default function Desktop() {
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </VideoContainer>
+          )}
+          {win.kind === "safari" && (
+            <SafariApp />
           )}
           {win.kind === "pdf" && (
             (win.payload as { hasDocPath?: boolean })?.hasDocPath

@@ -19,6 +19,9 @@ interface GlobalState {
   clearSelection: () => void;
   messages: Message[];
   addMessage: (role: "user" | "assistant", content: string) => void;
+  pendingSafariUrl: string | null;
+  openInSafari: (url: string) => void;
+  clearPendingSafariUrl: () => void;
 }
 
 let msgId = 0;
@@ -41,4 +44,7 @@ export const useGlobalStore = create<GlobalState>((set) => ({
         { id: String(++msgId), role, content, timestamp: Date.now() },
       ],
     })),
+  pendingSafariUrl: null,
+  openInSafari: (url) => set({ pendingSafariUrl: url }),
+  clearPendingSafariUrl: () => set({ pendingSafariUrl: null }),
 }));

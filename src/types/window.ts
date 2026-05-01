@@ -1,4 +1,4 @@
-export type WindowKind = "finder" | "viewer" | "pdf" | "video";
+export type WindowKind = "finder" | "viewer" | "pdf" | "video" | "safari";
 
 export interface WindowState {
   id: string;

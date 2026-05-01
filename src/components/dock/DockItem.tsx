@@ -39,7 +39,7 @@ const Wrapper = styled.button`
 
   &:hover > span {
     opacity: 1;
-    transform: translateX(-50%) translateY(-6px);
+    transform: translateX(-50%) translateY(-6px) scale(calc(1 / var(--dock-scale, 1)));
   }
 
   /* 아이콘 bounce on click */
@@ -66,17 +66,17 @@ const IconBox = styled.div`
 
 const Label = styled.span`
   position: absolute;
-  top: -34px;
+  top: -28px;
   left: 50%;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(0) scale(calc(1 / var(--dock-scale, 1)));
   background: rgba(30, 30, 30, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 6px;
+  padding: 3px 10px;
+  border-radius: 5px;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
