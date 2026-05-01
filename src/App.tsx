@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MenuBar from "./components/menubar/MenuBar";
 import Desktop from "./components/desktop/Desktop";
 import Dock from "./components/dock/Dock";
@@ -13,9 +13,7 @@ export default function App() {
   const [showNotif, setShowNotif] = useState(false);
   const { openWindow } = useWindows();
 
-  const handleUnlock = useCallback(() => {
-    setLocked(false);
-    setShowNotif(true);
+  useEffect(() => {
     openWindow({
       id: "safari-main",
       kind: "safari",
@@ -25,6 +23,11 @@ export default function App() {
       height: 680,
     });
   }, [openWindow]);
+
+  const handleUnlock = useCallback(() => {
+    setLocked(false);
+    setShowNotif(true);
+  }, []);
 
   return (
     <>

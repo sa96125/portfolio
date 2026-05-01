@@ -29,10 +29,10 @@ export default function Notification({ show, onClose }: Props) {
     }
   }, [show]);
 
-  // 5초 후 자동 닫힘
+  // 7초 후 자동 닫힘
   useEffect(() => {
     if (!visible) return;
-    const autoClose = setTimeout(() => dismiss(), 5000);
+    const autoClose = setTimeout(() => dismiss(), 7000);
     return () => clearTimeout(autoClose);
   }, [visible, dismiss]);
 

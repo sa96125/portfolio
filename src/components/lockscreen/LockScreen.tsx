@@ -6,8 +6,39 @@ interface Props {
   onUnlock: () => void;
 }
 
+const PRELOAD_RESOURCES = [
+  "/wallpaper.jpg",
+  "/docs/박종승_여권사진.jpg",
+  "/docs/박종승_프로필.jpeg",
+  "/dock-icons/finder.png",
+  "/dock-icons/safari.png",
+  "/dock-icons/vscode.png",
+  "/dock-icons/docker.png",
+  "/dock-icons/claude.png",
+  "/dock-icons/intellij.png",
+  "/dock-icons/datagrip.png",
+  "/dock-icons/photos.png",
+  "/dock-icons/notes.png",
+  "/dock-icons/music.png",
+  "/dock-icons/mail.png",
+  "/dock-icons/messages.png",
+  "/dock-icons/folder.png",
+  "/dock-icons/settings.png",
+];
+
+function preloadImage(src: string): Promise<void> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = src;
+  });
+}
+
 export default function LockScreen({ onUnlock }: Props) {
   const [time, setTime] = useState(new Date());
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [unlocking, setUnlocking] = useState(false);
 
   useEffect(() => {
@@ -15,10 +46,25 @@ export default function LockScreen({ onUnlock }: Props) {
     return () => clearInterval(id);
   }, []);
 
-  const handleUnlock = useCallback(() => {
-    setUnlocking(true);
-    setTimeout(onUnlock, 600);
-  }, [onUnlock]);
+  const handleClick = useCallback(() => {
+    if (loading || unlocking) return;
+    setLoading(true);
+
+    let loaded = 0;
+    const total = PRELOAD_RESOURCES.length;
+
+    const promises = PRELOAD_RESOURCES.map((src) =>
+      preloadImage(src).then(() => {
+        loaded++;
+        setProgress(loaded / total);
+      })
+    );
+
+    Promise.all(promises).then(() => {
+      setUnlocking(true);
+      setTimeout(onUnlock, 600);
+    });
+  }, [loading, unlocking, onUnlock]);
 
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -29,7 +75,7 @@ export default function LockScreen({ onUnlock }: Props) {
   const minutes = String(time.getMinutes()).padStart(2, "0");
 
   return (
-    <Container data-unlocking={unlocking} onClick={handleUnlock}>
+    <Container data-unlocking={unlocking} onClick={handleClick}>
       <Bg />
 
       <ClockArea>
@@ -43,7 +89,14 @@ export default function LockScreen({ onUnlock }: Props) {
           <AvatarImg src="/docs/박종승_여권사진.jpg" alt="박종승" draggable={false} />
         </Avatar>
         <UserName>박종승</UserName>
+
         <Hint>Click to enter portfolio</Hint>
+
+        {loading && (
+          <BarTrack>
+            <BarFill style={{ width: `${progress * 100}%` }} />
+          </BarTrack>
+        )}
       </UserArea>
     </Container>
   );
@@ -150,4 +203,20 @@ const Hint = styled.div`
   color: rgba(255, 255, 255, 0.55);
   margin-top: 4px;
   animation: ${pulse} 3s ease-in-out infinite;
+`;
+
+const BarTrack = styled.div`
+  width: 182px;
+  height: 5px;
+  border-radius: 2.5px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  margin-top: 12px;
+`;
+
+const BarFill = styled.div`
+  height: 100%;
+  border-radius: 2.5px;
+  background: #fff;
+  transition: width 0.3s ease-out;
 `;
