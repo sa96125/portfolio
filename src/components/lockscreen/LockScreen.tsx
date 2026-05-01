@@ -26,7 +26,10 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/settings.png",
 ];
 
-const MIN_DURATION = 4500;
+// 전체 바 소요 시간 (초)
+const TOTAL_SEC = 5;
+// 처음 1/3은 무조건 올라가는 구간 (초)
+const GUARANTEED_SEC = TOTAL_SEC / 3;
 
 function preloadImage(src: string): Promise<void> {
   return new Promise((resolve) => {
@@ -42,8 +45,8 @@ export default function LockScreen({ onUnlock }: Props) {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [unlocking, setUnlocking] = useState(false);
-  const realProgress = useRef(0);
-  const resourcesDone = useRef(false);
+  const realRef = useRef(0);
+  const doneRef = useRef(false);
   const rafRef = useRef(0);
 
   useEffect(() => {
@@ -51,33 +54,44 @@ export default function LockScreen({ onUnlock }: Props) {
     return () => clearInterval(id);
   }, []);
 
-  useEffect(() => {
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   const handleClick = useCallback(() => {
     if (loading || unlocking) return;
     setLoading(true);
-    realProgress.current = 0;
-    resourcesDone.current = false;
+    realRef.current = 0;
+    doneRef.current = false;
 
     let loaded = 0;
     const total = PRELOAD_RESOURCES.length;
-
     PRELOAD_RESOURCES.forEach((src) =>
       preloadImage(src).then(() => {
         loaded++;
-        realProgress.current = loaded / total;
-        if (loaded === total) resourcesDone.current = true;
+        realRef.current = loaded / total;
+        if (loaded === total) doneRef.current = true;
       })
     );
 
     const start = performance.now();
 
     const tick = () => {
-      const t = Math.min((performance.now() - start) / MIN_DURATION, 1);
+      const sec = (performance.now() - start) / 1000;
 
-      if (resourcesDone.current && t >= 1) {
+      let value: number;
+      if (sec <= GUARANTEED_SEC) {
+        // 처음 1/3: 시간 기반으로 무조건 0→33%
+        value = (sec / GUARANTEED_SEC) * 0.33;
+      } else {
+        // 나머지: 33%에서 시작, 리소스 진행률에 비례해서 100%까지
+        const remaining = Math.min((sec - GUARANTEED_SEC) / (TOTAL_SEC - GUARANTEED_SEC), 1);
+        const real = realRef.current;
+        // 리소스 진행률과 시간 중 느린 쪽
+        const factor = Math.min(remaining, real);
+        value = 0.33 + factor * 0.67;
+      }
+
+      // 완료 조건: 리소스 다 됨 + 전체 시간 경과
+      if (doneRef.current && sec >= TOTAL_SEC) {
         setProgress(1);
         setTimeout(() => {
           setUnlocking(true);
@@ -86,8 +100,7 @@ export default function LockScreen({ onUnlock }: Props) {
         return;
       }
 
-      // 리소스 미완료 시 95%에서 대기, 완료 시 시간 따라 100%까지
-      setProgress(resourcesDone.current ? t : Math.min(t, 0.95));
+      setProgress(value);
       rafRef.current = requestAnimationFrame(tick);
     };
 
@@ -111,7 +124,6 @@ export default function LockScreen({ onUnlock }: Props) {
         <Time>{hours}:{minutes}</Time>
       </ClockArea>
 
-      {/* 사용자 영역 — 화면 하단 */}
       <UserArea>
         <Avatar>
           <AvatarImg src="/docs/박종승_여권사진.jpg" alt="박종승" draggable={false} />
@@ -245,5 +257,4 @@ const BarFill = styled.div`
   height: 100%;
   border-radius: 2.5px;
   background: #fff;
-  transition: width 0.15s linear;
 `;
