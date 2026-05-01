@@ -1,0 +1,44 @@
+/* 1. box-sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. 기본 여백 제거 */
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+/* 3. HTML, Body */
+html, body {
+  height: 100%;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background: #ffffff;
+  color: #333333;
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  overflow: hidden; /* macOS 데스크탑 — 바깥 스크롤 차단 */
+}
+
+/* 4. 미디어 */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 5. 폼 요소 */
+input, button, textarea, select {
+  font: inherit;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+button {
+  cursor: pointer;
+}

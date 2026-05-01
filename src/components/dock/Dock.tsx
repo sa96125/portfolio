@@ -1,0 +1,108 @@
+import styled from "@emotion/styled";
+import { useCallback, useRef, useState } from "react";
+import DockItem from "./DockItem";
+
+interface DockApp {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+const ICON_SIZE = 50;
+const GAP = 4;
+const PAD = 10;
+const MAGNIFY_RANGE = 130;
+const MAX_SCALE = 1.6;
+
+export default function Dock() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mouseX, setMouseX] = useState<number | null>(null);
+
+  const apps: DockApp[] = [
+    { id: "finder", label: "Finder", icon: "/dock-icons/finder.png" },
+    { id: "safari", label: "Safari", icon: "/dock-icons/safari.png" },
+    { id: "vscode", label: "Visual Studio Code", icon: "/dock-icons/vscode.png" },
+    { id: "docker", label: "Docker", icon: "/dock-icons/docker.png" },
+    { id: "claude", label: "Claude", icon: "/dock-icons/claude.png" },
+    { id: "intellij", label: "IntelliJ IDEA", icon: "/dock-icons/intellij.png" },
+    { id: "datagrip", label: "DataGrip", icon: "/dock-icons/datagrip.png" },
+    { id: "photos", label: "사진", icon: "/dock-icons/photos.png" },
+    { id: "notes", label: "메모", icon: "/dock-icons/notes.png" },
+    { id: "music", label: "음악", icon: "/dock-icons/music.png" },
+    { id: "settings", label: "시스템 설정", icon: "/dock-icons/settings.png" },
+  ];
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setMouseX(e.clientX - rect.left);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setMouseX(null);
+  }, []);
+
+  const getScale = (index: number) => {
+    if (mouseX === null) return 1;
+    const iconCenter = PAD + index * (ICON_SIZE + GAP) + ICON_SIZE / 2;
+    const dist = Math.abs(mouseX - iconCenter);
+    if (dist > MAGNIFY_RANGE) return 1;
+    const ratio = (1 + Math.cos((Math.PI * dist) / MAGNIFY_RANGE)) / 2;
+    return 1 + (MAX_SCALE - 1) * ratio;
+  };
+
+  return (
+    <Bar>
+      <Glass
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {apps.map((app, i) => (
+          <DockItem
+            key={app.id}
+            label={app.label}
+            icon={<AppIcon src={app.icon} alt={app.label} draggable={false} />}
+            scale={getScale(i)}
+          />
+        ))}
+      </Glass>
+    </Bar>
+  );
+}
+
+const Bar = styled.nav`
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+const Glass = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: ${GAP}px;
+  padding: 6px ${PAD}px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.06),
+    0 8px 40px rgba(0, 0, 0, 0.12),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.7);
+`;
+
+const AppIcon = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  user-select: none;
+  pointer-events: none;
+`;
+
