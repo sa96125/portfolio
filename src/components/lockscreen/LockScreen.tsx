@@ -77,9 +77,10 @@ export default function LockScreen({ onUnlock }: Props) {
     const tick = () => {
       const elapsed = performance.now() - start;
       const t = Math.min(elapsed / MIN_DURATION, 1);
+      const real = realProgress.current;
 
-      // 거의 linear에 가깝지만 시작·끝만 살짝 부드러운 커브
-      const eased = t < 0.02 ? t * 25 * t : t;
+      // 시간 커브(40%)와 실제 네트워크 진행률(60%)을 블렌딩
+      const blended = t * 0.4 + real * 0.6;
 
       if (resourcesDone.current && t >= 1) {
         setProgress(1);
@@ -90,7 +91,7 @@ export default function LockScreen({ onUnlock }: Props) {
         return;
       }
 
-      setProgress(resourcesDone.current ? Math.max(eased, realProgress.current) : eased);
+      setProgress(blended);
       rafRef.current = requestAnimationFrame(tick);
     };
 
