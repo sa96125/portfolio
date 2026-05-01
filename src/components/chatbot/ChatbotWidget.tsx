@@ -11,7 +11,7 @@ export default function ChatbotWidget() {
   const addMessage = useGlobalStore((s) => s.addMessage);
   const panelRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
-  const replyTimer = useRef<ReturnType<typeof setTimeout>>();
+  const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => clearTimeout(replyTimer.current);

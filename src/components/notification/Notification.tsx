@@ -10,7 +10,7 @@ interface Props {
 export default function Notification({ show, onClose }: Props) {
   const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const exitTimer = useRef<ReturnType<typeof setTimeout>>();
+  const exitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const dismiss = useCallback(() => {
     setExiting(true);
