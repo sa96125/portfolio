@@ -80,8 +80,8 @@ export default function LockScreen({ onUnlock }: Props) {
       const timeCap = Math.min(elapsed / MIN_DURATION, 1);
       const eased = 1 - (1 - timeCap) ** 2.5;
 
-      // 실제 로드 진행률과 시간 상한 중 작은 쪽을 따라감
-      const visual = Math.min(realProgress.current, eased);
+      // 시간 커브를 기본으로 깔되, 리소스가 앞서면 그쪽을 따라감
+      const visual = Math.max(eased, Math.min(realProgress.current, eased + 0.1));
 
       if (resourcesDone.current && timeCap >= 1) {
         setProgress(1);
@@ -125,11 +125,9 @@ export default function LockScreen({ onUnlock }: Props) {
 
         <Hint>Click to enter portfolio</Hint>
 
-        {loading && (
-          <BarTrack>
-            <BarFill style={{ width: `${progress * 100}%` }} />
-          </BarTrack>
-        )}
+        <BarTrack style={{ opacity: loading ? 1 : 0 }}>
+          <BarFill style={{ width: `${progress * 100}%` }} />
+        </BarTrack>
       </UserArea>
     </Container>
   );
@@ -245,6 +243,7 @@ const BarTrack = styled.div`
   background: rgba(255, 255, 255, 0.2);
   overflow: hidden;
   margin-top: 12px;
+  transition: opacity 0.3s ease;
 `;
 
 const BarFill = styled.div`
