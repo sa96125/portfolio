@@ -128,14 +128,14 @@ const Glass = styled.div`
   gap: ${GAP}px;
   padding: 6px ${PAD}px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(32px) saturate(170%);
+  -webkit-backdrop-filter: blur(32px) saturate(170%);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
   box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.04),
-    0 8px 40px rgba(0, 0, 0, 0.12),
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
+    0 0 0 0.5px rgba(0, 0, 0, 0.03),
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.15);
 `;
 
 const AppIcon = styled.img`
