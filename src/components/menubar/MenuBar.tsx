@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import * as Menubar from "@radix-ui/react-menubar";
 import { useGlobalStore } from "../../store/useGlobalStore";
 import StatusItems from "./StatusItems";
 
 export default function MenuBar() {
-  const isOpen = useGlobalStore((s) => s.isChatbotOpen);
-  const toggleChatbot = useGlobalStore((s) => s.toggleChatbot);
+  const [showAlert, setShowAlert] = useState(false);
 
   return (
+    <>
     <Bar>
       <Menubar.Root asChild>
         <Group>
@@ -29,9 +31,9 @@ export default function MenuBar() {
             <Trigger>실행</Trigger>
             <Menubar.Portal>
               <Content sideOffset={6}>
-                <Item onSelect={toggleChatbot}>
+                <Item onSelect={() => setShowAlert(true)}>
                   <ItemContent>
-                    <ItemLabel>{isOpen ? "Tars AI 닫기" : "Tars AI 열기"}</ItemLabel>
+                    <ItemLabel>Tars AI 열기</ItemLabel>
                     <ItemDesc>프로젝트에 대해 질문할 수 있는 AI 어시스턴트</ItemDesc>
                   </ItemContent>
                 </Item>
@@ -56,6 +58,23 @@ export default function MenuBar() {
         <StatusItems />
       </Group>
     </Bar>
+
+    {showAlert && createPortal(
+      <AlertOverlay onClick={() => setShowAlert(false)}>
+        <AlertBox onClick={(e) => e.stopPropagation()}>
+          <AlertTitle>Tars AI를 실행할 수 없습니다</AlertTitle>
+          <AlertMessage>
+            GPU 자원이 부족하여 AI 어시스턴트를<br />
+            실행할 수 없습니다.
+          </AlertMessage>
+          <AlertBtn onClick={() => setShowAlert(false)}>
+            확인
+          </AlertBtn>
+        </AlertBox>
+      </AlertOverlay>,
+      document.body
+    )}
+    </>
   );
 }
 
@@ -177,5 +196,57 @@ const ItemDesc = styled.span`
   [data-highlighted] & {
     color: rgba(255, 255, 255, 0.7);
   }
+`;
+
+/* ── 시스템 경고 팝업 ── */
+const AlertOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+`;
+
+const AlertBox = styled.div`
+  background: rgba(232, 230, 230, 0.75);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 14px;
+  padding: 28px 32px 20px;
+  text-align: center;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.1),
+    0 8px 40px rgba(0, 0, 0, 0.25);
+  width: 360px;
+`;
+
+const AlertTitle = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+  line-height: 1.4;
+`;
+
+const AlertMessage = styled.div`
+  font-size: 12px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+`;
+
+const AlertBtn = styled.button`
+  width: 100%;
+  background: linear-gradient(180deg, #4a90d9 0%, #3a7bd5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
 `;
 
