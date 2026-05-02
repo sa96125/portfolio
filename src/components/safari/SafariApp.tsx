@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useState, useCallback, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useGlobalStore } from "../../store/useGlobalStore";
 
 interface Tab {
@@ -26,17 +27,13 @@ const INITIAL_TABS: Tab[] = [
     title: "Hyundai Robotics Lab",
     url: "https://robotics.hyundai.com/lab/about.do",
   },
-  // {
-  //   id: "4",
-  //   title: "Refind Products",
-  //   url: "https://products.refind.kr/31aa2d7f-56e3-8062-a7b4-d5c07d411b2f",
-  // },
 ];
 
 export default function SafariApp() {
   const [tabs, setTabs] = useState<Tab[]>(INITIAL_TABS);
   const [activeTabId, setActiveTabId] = useState("2");
   const [addressValue, setAddressValue] = useState(INITIAL_TABS[1].url);
+  const [blockedUrl, setBlockedUrl] = useState<string | null>(null);
   const addressRef = useRef<HTMLInputElement>(null);
 
   const activeTab = tabs.find((t) => t.id === activeTabId);
@@ -124,6 +121,26 @@ export default function SafariApp() {
     clearPendingUrl();
   }, [pendingUrl, clearPendingUrl]);
 
+  // iframe 로드 에러 감지
+  const handleIframeLoad = useCallback((e: React.SyntheticEvent<HTMLIFrameElement>) => {
+    const iframe = e.currentTarget;
+    try {
+      // cross-origin이면 contentDocument 접근 시 에러 발생 → 정상 로드된 것
+      const doc = iframe.contentDocument;
+      // 같은 origin인데 body가 비어있으면 차단된 것
+      if (doc && doc.body && doc.body.innerHTML === "") {
+        setBlockedUrl(activeTab?.url ?? "");
+      }
+    } catch {
+      // cross-origin 접근 에러 → 정상 로드 (외부 사이트)
+    }
+  }, [activeTab]);
+
+  // iframe 에러 시 (일부 브라우저)
+  const handleIframeError = useCallback(() => {
+    setBlockedUrl(activeTab?.url ?? "");
+  }, [activeTab]);
+
   return (
     <Wrapper>
       <TabBar>
@@ -176,7 +193,9 @@ export default function SafariApp() {
             key={activeTab.id}
             src={activeTab.url}
             title={activeTab.title}
-            sandbox="allow-scripts allow-popups allow-forms"
+            sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
+            onLoad={handleIframeLoad}
+            onError={handleIframeError}
           />
         ) : (
           <EmptyPage>
@@ -185,6 +204,30 @@ export default function SafariApp() {
           </EmptyPage>
         )}
       </IframeArea>
+
+      {blockedUrl && createPortal(
+        <AlertOverlay onClick={() => setBlockedUrl(null)}>
+          <AlertBox onClick={(e) => e.stopPropagation()}>
+            <AlertTitle>페이지를 표시할 수 없습니다</AlertTitle>
+            <AlertMessage>
+              이 웹사이트는 보안 정책으로 인해<br />
+              내장 브라우저에서 열 수 없습니다.
+            </AlertMessage>
+            <AlertBtn
+              onClick={() => {
+                window.open(blockedUrl, "_blank");
+                setBlockedUrl(null);
+              }}
+            >
+              외부 브라우저에서 열기
+            </AlertBtn>
+            <AlertBtnSecondary onClick={() => setBlockedUrl(null)}>
+              닫기
+            </AlertBtnSecondary>
+          </AlertBox>
+        </AlertOverlay>,
+        document.body
+      )}
     </Wrapper>
   );
 }
@@ -358,4 +401,69 @@ const EmptyText = styled.div`
 const EmptySub = styled.div`
   font-size: 13px;
   color: #555;
+`;
+
+/* ── 시스템 경고 팝업 (Finder 잠금 스타일) ── */
+const AlertOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+`;
+
+const AlertBox = styled.div`
+  background: rgba(232, 230, 230, 0.75);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 14px;
+  padding: 28px 32px 20px;
+  text-align: center;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.1),
+    0 8px 40px rgba(0, 0, 0, 0.25);
+  width: 360px;
+`;
+
+const AlertTitle = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+  line-height: 1.4;
+`;
+
+const AlertMessage = styled.div`
+  font-size: 12px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+`;
+
+const AlertBtn = styled.button`
+  width: 100%;
+  background: linear-gradient(180deg, #4a90d9 0%, #3a7bd5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+`;
+
+const AlertBtnSecondary = styled.button`
+  width: 100%;
+  background: rgba(0, 0, 0, 0.06);
+  color: #333;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
 `;

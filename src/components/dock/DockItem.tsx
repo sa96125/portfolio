@@ -19,12 +19,14 @@ export default memo(function DockItem({ label, icon, scale = 1, isActive, badge,
       aria-label={label}
       style={{ "--dock-scale": scale } as React.CSSProperties}
     >
-      <IconBox data-bounce={bounce || undefined}>{icon}</IconBox>
-      {badge != null && badge > 0 && (
-        <Badge style={{ transform: `scale(${1 / scale})` }}>
-          {badge > 99 ? "99+" : badge}
-        </Badge>
-      )}
+      <IconBox data-bounce={bounce || undefined}>
+        {icon}
+        {badge != null && badge > 0 && (
+          <Badge style={{ transform: `scale(${1 / scale})` }}>
+            {badge > 99 ? "99+" : badge}
+          </Badge>
+        )}
+      </IconBox>
       <Label>{label}</Label>
       {isActive && <Dot />}
     </Wrapper>
@@ -67,6 +69,7 @@ const Wrapper = styled.button`
 `;
 
 const IconBox = styled.div`
+  position: relative;
   width: 50px;
   height: 50px;
   display: flex;
