@@ -11,10 +11,10 @@ interface Photo {
 }
 
 const ALL_PHOTOS: Photo[] = [
-  { id: "1", src: "/docs/desktop_내사랑.jpeg", label: "내사랑", date: "2024-05", favorite: true },
-  { id: "2", src: "/docs/데이트.jpeg", label: "데이트", date: "2024-05", favorite: true },
-  { id: "3", src: "/docs/박종승_썸네일.jpeg", label: "썸네일", date: "2024-05", favorite: false },
-  { id: "4", src: "/docs/박종승_여권사진.jpg", label: "여권사진", date: "2024-03", favorite: false },
+  { id: "1", src: "/docs/f1d2a9.jpeg", label: "내사랑", date: "2024-05", favorite: true },
+  { id: "2", src: "/docs/h3f7c1.jpeg", label: "데이트", date: "2024-05", favorite: true },
+  { id: "3", src: "/docs/c9e5f2.jpeg", label: "썸네일", date: "2024-05", favorite: false },
+  { id: "4", src: "/docs/a7f3e1.jpg", label: "여권사진", date: "2024-03", favorite: false },
   { id: "5", src: "/book1.jpg", label: "book1", date: "2024-01", favorite: false },
 ];
 

@@ -29,7 +29,7 @@ export default function AboutModal() {
 
         <Body>
           {/* 프로필 사진 */}
-          <ProfilePhoto src="/docs/박종승_여권사진.jpg" alt="박종승" draggable={false} />
+          <ProfilePhoto src="/docs/a7f3e1.jpg" alt="박종승" draggable={false} />
 
           <Name>박종승</Name>
           <Role>Full-Stack Engineer</Role>

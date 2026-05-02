@@ -73,7 +73,7 @@ export default function Desktop() {
 
   const handleOpenImage = useCallback(() => {
     const img = new Image();
-    img.src = "/docs/desktop_내사랑.jpeg";
+    img.src = "/docs/f1d2a9.jpeg";
     img.onerror = () => {};
     img.onload = () => {
       const ratio = img.width / img.height;
@@ -83,7 +83,7 @@ export default function Desktop() {
         id: "viewer-wife",
         kind: "viewer",
         title: "내사랑",
-        payload: { src: "/docs/desktop_내사랑.jpeg" },
+        payload: { src: "/docs/f1d2a9.jpeg" },
         width: contentW,
         height: contentH + TITLEBAR_H,
       });
@@ -92,7 +92,7 @@ export default function Desktop() {
 
   const handleOpenVideo = useCallback(() => {
     const vid = document.createElement("video");
-    vid.src = "/docs/desktop_딸내미.mp4";
+    vid.src = "/docs/g5b8e3.mp4";
     vid.onerror = () => {};
     vid.onloadedmetadata = () => {
       const ratio = vid.videoWidth / vid.videoHeight;
@@ -102,7 +102,7 @@ export default function Desktop() {
         id: "video-daughter",
         kind: "video",
         title: "딸내미",
-        payload: { src: "/docs/desktop_딸내미.mp4" },
+        payload: { src: "/docs/g5b8e3.mp4" },
         width: contentW,
         height: contentH + TITLEBAR_H,
       });
@@ -135,14 +135,14 @@ export default function Desktop() {
             id="icon-wife"
             label="내사랑"
             type="image"
-            thumbnail="/docs/desktop_내사랑.jpeg"
+            thumbnail="/docs/f1d2a9.jpeg"
             onDoubleClick={handleOpenImage}
           />
           <DesktopIcon
             id="icon-daughter"
             label="딸내미"
             type="video"
-            thumbnail="/docs/desktop_딸내미.mp4"
+            thumbnail="/docs/g5b8e3.mp4"
             onDoubleClick={handleOpenVideo}
           />
           <DesktopIcon

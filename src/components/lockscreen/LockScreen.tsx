@@ -8,8 +8,8 @@ interface Props {
 
 const PRELOAD_RESOURCES = [
   "/wallpaper.jpg",
-  "/docs/박종승_여권사진.jpg",
-  "/docs/박종승_프로필.jpeg",
+  "/docs/a7f3e1.jpg",
+  "/docs/b2c4d8.jpeg",
   "/dock-icons/finder.png",
   "/dock-icons/safari.png",
   "/dock-icons/vscode.png",
@@ -24,7 +24,7 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/folder.png",
   "/dock-icons/settings.png",
   "/tars.gif",
-  "/docs/desktop_내사랑.jpeg",
+  "/docs/f1d2a9.jpeg",
 ];
 
 // 전체 바 소요 시간 (초)
@@ -127,7 +127,7 @@ export default function LockScreen({ onUnlock }: Props) {
 
       <UserArea>
         <Avatar>
-          <AvatarImg src="/docs/박종승_여권사진.jpg" alt="박종승" draggable={false} />
+          <AvatarImg src="/docs/a7f3e1.jpg" alt="박종승" draggable={false} />
         </Avatar>
         <UserName>박종승</UserName>
 
