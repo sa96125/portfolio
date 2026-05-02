@@ -1,14 +1,11 @@
 import styled from "@emotion/styled";
 import * as Menubar from "@radix-ui/react-menubar";
 import { useGlobalStore } from "../../store/useGlobalStore";
-import { useWindows } from "../../hooks/useWindows";
 import StatusItems from "./StatusItems";
 
 export default function MenuBar() {
   const isOpen = useGlobalStore((s) => s.isChatbotOpen);
   const toggleChatbot = useGlobalStore((s) => s.toggleChatbot);
-  const openInSafari = useGlobalStore((s) => s.openInSafari);
-  const { openWindow } = useWindows();
 
   return (
     <Bar>
@@ -18,17 +15,7 @@ export default function MenuBar() {
             <Trigger style={{ fontWeight: 600 }}>Jongseung Park</Trigger>
             <Menubar.Portal>
               <Content sideOffset={6}>
-                <Item onSelect={() => {
-                  openInSafari("https://github.com/sa96125/");
-                  openWindow({
-                    id: "safari-main",
-                    kind: "safari",
-                    title: "Safari",
-                    payload: {},
-                    width: 1024,
-                    height: 680,
-                  });
-                }}>
+                <Item onSelect={() => window.open("https://github.com/sa96125/", "_blank")}>
                   GitHub
                 </Item>
                 <Item onSelect={() => window.location.assign("mailto:sa96125@gmail.com")}>
