@@ -244,11 +244,16 @@ function shortDate(ts: number): string {
 /* ─── Component ────────────────────────────────────── */
 export default function NotesApp() {
   const [notes, setNotes] = useState<Note[]>(loadNotes);
-  const [selectedId, setSelectedId] = useState<string | null>(() => {
-    const n = loadNotes();
-    return n.length > 0 ? n.sort((a, b) => b.updatedAt - a.updatedAt)[0].id : null;
-  });
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // 마운트 시 첫 번째 메모 자동 선택
+  useEffect(() => {
+    if (selectedId === null && notes.length > 0) {
+      const sorted = [...notes].sort((a, b) => b.updatedAt - a.updatedAt);
+      setSelectedId(sorted[0].id);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Persist notes
   useEffect(() => {
