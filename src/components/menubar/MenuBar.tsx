@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import * as Menubar from "@radix-ui/react-menubar";
-import { useGlobalStore } from "../../store/useGlobalStore";
 import StatusItems from "./StatusItems";
+import { useGlobalStore } from "../../store/useGlobalStore";
 
 export default function MenuBar() {
   const [showAlert, setShowAlert] = useState(false);
