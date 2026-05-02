@@ -26,6 +26,11 @@ const INITIAL_TABS: Tab[] = [
     title: "Hyundai Robotics Lab",
     url: "https://robotics.hyundai.com/lab/about.do",
   },
+  // {
+  //   id: "4",
+  //   title: "Refind Products",
+  //   url: "https://products.refind.kr/31aa2d7f-56e3-8062-a7b4-d5c07d411b2f",
+  // },
 ];
 
 export default function SafariApp() {
@@ -167,20 +172,12 @@ export default function SafariApp() {
 
       <IframeArea>
         {activeTab?.url ? (
-          <BlockedPage>
-            <AlertBox>
-              <AlertTitle>페이지를 표시할 수 없습니다</AlertTitle>
-              <AlertMessage>
-                이 웹사이트는 보안 정책으로 인해<br />
-                내장 브라우저에서 열 수 없습니다.
-              </AlertMessage>
-              <AlertBtn
-                onClick={() => window.open(activeTab.url, "_blank")}
-              >
-                외부 브라우저에서 열기
-              </AlertBtn>
-            </AlertBox>
-          </BlockedPage>
+          <StyledIframe
+            key={activeTab.id}
+            src={activeTab.url}
+            title={activeTab.title}
+            sandbox="allow-scripts allow-popups allow-forms"
+          />
         ) : (
           <EmptyPage>
             <EmptyText>새 탭</EmptyText>
@@ -336,13 +333,10 @@ const IframeArea = styled.div`
   background: #fff;
 `;
 
-const BlockedPage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+const StyledIframe = styled.iframe`
+  width: 100%;
   height: 100%;
-  background: #1e1e1e;
+  border: none;
 `;
 
 const EmptyPage = styled.div`
@@ -365,47 +359,3 @@ const EmptySub = styled.div`
   font-size: 13px;
   color: #555;
 `;
-
-/* ── 시스템 경고 (Finder 잠금 스타일) ── */
-const AlertBox = styled.div`
-  background: rgba(232, 230, 230, 0.75);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border-radius: 14px;
-  padding: 28px 32px 20px;
-  text-align: center;
-  box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.1),
-    0 8px 40px rgba(0, 0, 0, 0.25);
-  width: 360px;
-`;
-
-const AlertTitle = styled.div`
-  font-size: 15px;
-  font-weight: 700;
-  color: #1d1d1f;
-  margin-bottom: 8px;
-  line-height: 1.4;
-`;
-
-const AlertMessage = styled.div`
-  font-size: 12px;
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 20px;
-`;
-
-const AlertBtn = styled.button`
-  width: 100%;
-  background: linear-gradient(180deg, #4a90d9 0%, #3a7bd5 100%);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 0;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  letter-spacing: 0.3px;
-  margin-bottom: 8px;
-`;
-
