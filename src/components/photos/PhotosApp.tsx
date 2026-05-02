@@ -16,8 +16,6 @@ const ALL_PHOTOS: Photo[] = [
   { id: "3", src: "/docs/박종승_썸네일.jpeg", label: "썸네일", date: "2024-05", favorite: false },
   { id: "4", src: "/docs/박종승_프로필.jpeg", label: "프로필", date: "2024-05", favorite: false },
   { id: "5", src: "/docs/박종승_여권사진.jpg", label: "여권사진", date: "2024-03", favorite: false },
-  { id: "6", src: "/wallpaper.jpg", label: "wallpaper", date: "2024-01", favorite: false },
-  { id: "7", src: "/book1.jpg", label: "book1", date: "2024-01", favorite: false },
 ];
 
 /* ─── Sidebar Data ─────────────────────────────────── */
