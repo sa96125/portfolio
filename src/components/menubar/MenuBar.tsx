@@ -239,7 +239,7 @@ const AlertMessage = styled.div`
 
 const AlertBtn = styled.button`
   width: 100%;
-  background: linear-gradient(180deg, #e84142 0%, #c7302f 100%);
+  background: #e84142;
   color: #fff;
   border: none;
   border-radius: 10px;
