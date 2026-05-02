@@ -137,6 +137,7 @@ const ImagePreview = styled.div`
       0 1px 2px rgba(0, 0, 0, 0.2),
       0 4px 12px rgba(0, 0, 0, 0.12);
     border: 0.5px solid rgba(255, 255, 255, 0.3);
+    background: #2a2a2c;
   }
 `;
 

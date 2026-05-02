@@ -516,6 +516,7 @@ const AlbumCover = styled.img`
   border-radius: 8px;
   display: block;
   object-fit: cover;
+  background: #2a2a2c;
 `;
 
 const AlbumTitle = styled.div`

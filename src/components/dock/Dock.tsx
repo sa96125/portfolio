@@ -99,7 +99,7 @@ export default function Dock() {
           <DockItem
             key={app.id}
             label={app.label}
-            icon={<AppIcon src={app.icon} alt={app.label} draggable={false} />}
+            icon={<AppIcon src={app.icon} alt={app.label} width={50} height={50} draggable={false} />}
             scale={getScale(i)}
             badge={app.badge}
             bounce={app.bounce}

@@ -14,7 +14,6 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/safari.png",
   "/dock-icons/vscode.png",
   "/dock-icons/docker.png",
-  "/dock-icons/claude.png",
   "/dock-icons/intellij.png",
   "/dock-icons/datagrip.png",
   "/dock-icons/photos.png",
@@ -24,6 +23,8 @@ const PRELOAD_RESOURCES = [
   "/dock-icons/messages.png",
   "/dock-icons/folder.png",
   "/dock-icons/settings.png",
+  "/tars.gif",
+  "/docs/desktop_내사랑.jpeg",
 ];
 
 // 전체 바 소요 시간 (초)

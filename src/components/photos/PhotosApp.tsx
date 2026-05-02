@@ -233,7 +233,7 @@ export default function PhotosApp() {
               <PhotoGrid>
                 {photos.map((photo) => (
                   <PhotoCard key={photo.id} onDoubleClick={() => setViewPhoto(photo)}>
-                    <PhotoThumb src={photo.src} alt={photo.label} draggable={false} />
+                    <PhotoThumb src={photo.src} alt={photo.label} loading="lazy" draggable={false} />
                     {photo.favorite && (
                       <FavBadge>
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -489,6 +489,7 @@ const PhotoThumb = styled.img`
   height: 100%;
   object-fit: cover;
   display: block;
+  background: #2a2a2c;
 `;
 
 const FavBadge = styled.div`
