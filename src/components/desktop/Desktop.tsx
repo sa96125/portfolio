@@ -9,6 +9,7 @@ import FinderToolbar from "../finder/FinderToolbar";
 import { useWindows } from "../../hooks/useWindows";
 import { useGlobalStore } from "../../store/useGlobalStore";
 import { TITLEBAR_H, MAX_WIN_H } from "../../types/window";
+import type { WindowState } from "../../types/window";
 
 const SafariApp = lazy(() => import("../safari/SafariApp"));
 const NotesApp = lazy(() => import("../notes/NotesApp"));
@@ -17,6 +18,54 @@ const PhotosApp = lazy(() => import("../photos/PhotosApp"));
 const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
 const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
 const DataCollectionPipelineViewerApp = lazy(() => import("../viewer/DataCollectionPipelineViewerApp"));
+
+function renderWindowContent(win: WindowState) {
+  switch (win.kind) {
+    case "viewer":
+      return <ViewerApp src={win.payload.src ?? ""} alt={win.title} />;
+    case "finder":
+      return <FinderApp />;
+    case "video":
+      return (
+        <VideoContainer>
+          <video
+            src={win.payload.src ?? ""}
+            controls
+            autoPlay
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </VideoContainer>
+      );
+    case "pdf":
+      return (
+        <Suspense fallback={null}>
+          {win.payload.hasDocPath ? (
+            <embed
+              src={win.payload.src ?? ""}
+              type="application/pdf"
+              style={{ width: "100%", height: "100%", border: "none" }}
+            />
+          ) : win.payload.file === "회고-도슨트네비게이션.pdf" ? (
+            <DataPipelineViewerApp />
+          ) : win.payload.file === "설계-데이터파이프라인-좌표수집.pdf" ? (
+            <DataCollectionPipelineViewerApp />
+          ) : (
+            <PdfViewerApp />
+          )}
+        </Suspense>
+      );
+    case "safari":
+      return <Suspense fallback={null}><SafariApp /></Suspense>;
+    case "notes":
+      return <Suspense fallback={null}><NotesApp /></Suspense>;
+    case "music":
+      return <Suspense fallback={null}><MusicApp /></Suspense>;
+    case "photos":
+      return <Suspense fallback={null}><PhotosApp /></Suspense>;
+    default:
+      return null;
+  }
+}
 
 export default function Desktop() {
   const { windows, openWindow } = useWindows();
@@ -109,64 +158,10 @@ export default function Desktop() {
         <WindowFrame
           key={win.id}
           win={win}
-          dark={win.kind === "finder" || win.kind === "viewer" || win.kind === "pdf" || win.kind === "video" || win.kind === "safari" || win.kind === "notes" || win.kind === "music" || win.kind === "photos"}
+          dark
           toolbarContent={win.kind === "finder" ? <FinderToolbar /> : undefined}
         >
-          {win.kind === "viewer" && (
-            <ViewerApp
-              src={win.payload.src ?? ""}
-              alt={win.title}
-            />
-          )}
-          {win.kind === "finder" && (
-            <FinderApp />
-          )}
-          {win.kind === "video" && (
-            <VideoContainer>
-              <video
-                src={win.payload.src ?? ""}
-                controls
-                autoPlay
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </VideoContainer>
-          )}
-          {win.kind === "safari" && (
-            <Suspense fallback={null}>
-              <SafariApp />
-            </Suspense>
-          )}
-          {win.kind === "pdf" && (
-            <Suspense fallback={null}>
-              {win.payload.hasDocPath
-                ? <embed
-                    src={win.payload.src ?? ""}
-                    type="application/pdf"
-                    style={{ width: "100%", height: "100%", border: "none" }}
-                  />
-                : win.payload.file === "회고-도슨트네비게이션.pdf"
-                  ? <DataPipelineViewerApp />
-                  : win.payload.file === "설계-데이터파이프라인-좌표수집.pdf"
-                    ? <DataCollectionPipelineViewerApp />
-                    : <PdfViewerApp />
-              }
-            </Suspense>
-          )}
-          {win.kind === "notes" && (
-            <Suspense fallback={null}>
-              <NotesApp />
-            </Suspense>
-          )}
-          {win.kind === "music" && (
-            <Suspense fallback={null}>
-              <MusicApp />
-            </Suspense>
-          )}
-          {win.kind === "photos" && (
-            <Suspense fallback={null}>
-              <PhotosApp />
-            </Suspense>
-          )}
+          {renderWindowContent(win)}
         </WindowFrame>
       ))}
     </>

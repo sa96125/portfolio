@@ -3,12 +3,22 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import DockItem from "./DockItem";
 import { useWindows } from "../../hooks/useWindows";
 
+import type { WindowKind } from "../../types/window";
+
+interface WindowConfig {
+  kind: WindowKind;
+  title: string;
+  width: number;
+  height: number;
+}
+
 interface DockApp {
   id: string;
   label: string;
   icon: string;
   badge?: number;
   bounce?: boolean;
+  window?: WindowConfig;
 }
 
 const ICON_SIZE = 50;
@@ -18,16 +28,16 @@ const MAGNIFY_RANGE = 130;
 const MAX_SCALE = 1.35;
 
 const APPS: DockApp[] = [
-  { id: "finder", label: "Finder", icon: "/dock-icons/finder.png" },
-  { id: "safari", label: "Safari", icon: "/dock-icons/safari.png" },
-  { id: "vscode", label: "Visual Studio Code", icon: "/dock-icons/vscode.png" },
-  { id: "docker", label: "Docker", icon: "/dock-icons/docker.png" },
-  { id: "intellij", label: "IntelliJ IDEA", icon: "/dock-icons/intellij.png" },
-  { id: "datagrip", label: "DataGrip", icon: "/dock-icons/datagrip.png" },
-  { id: "photos", label: "사진", icon: "/dock-icons/photos.png" },
-  { id: "notes", label: "메모", icon: "/dock-icons/notes.png", badge: 1, bounce: true },
-  { id: "music", label: "음악", icon: "/dock-icons/music.png" },
-  { id: "settings", label: "시스템 설정", icon: "/dock-icons/settings.png" },
+  { id: "finder",   label: "Finder",              icon: "/dock-icons/finder.png",   window: { kind: "finder",  title: "프로젝트", width: 860,  height: 540 } },
+  { id: "safari",   label: "Safari",              icon: "/dock-icons/safari.png",   window: { kind: "safari",  title: "Safari",  width: 1024, height: 680 } },
+  { id: "vscode",   label: "Visual Studio Code",  icon: "/dock-icons/vscode.png" },
+  { id: "docker",   label: "Docker",              icon: "/dock-icons/docker.png" },
+  { id: "intellij", label: "IntelliJ IDEA",       icon: "/dock-icons/intellij.png" },
+  { id: "datagrip", label: "DataGrip",            icon: "/dock-icons/datagrip.png" },
+  { id: "photos",   label: "사진",                icon: "/dock-icons/photos.png",   window: { kind: "photos",  title: "사진",    width: 960,  height: 620 } },
+  { id: "notes",    label: "메모",                icon: "/dock-icons/notes.png",    window: { kind: "notes",   title: "메모",    width: 860,  height: 540 }, badge: 1, bounce: true },
+  { id: "music",    label: "음악",                icon: "/dock-icons/music.png",    window: { kind: "music",   title: "음악",    width: 960,  height: 600 } },
+  { id: "settings", label: "시스템 설정",          icon: "/dock-icons/settings.png" },
 ];
 
 export default function Dock() {
@@ -38,52 +48,11 @@ export default function Dock() {
 
   const handleAppClick = useCallback(
     (id: string) => {
-      if (id === "finder") {
-        openWindow({
-          id: "finder-projects",
-          kind: "finder",
-          title: "프로젝트",
-          payload: { folderId: "projects" },
-          width: 860,
-          height: 540,
-        });
-      } else if (id === "safari") {
-        openWindow({
-          id: "safari-main",
-          kind: "safari",
-          title: "Safari",
-          payload: {},
-          width: 1024,
-          height: 680,
-        });
-      } else if (id === "photos") {
-        openWindow({
-          id: "photos-main",
-          kind: "photos",
-          title: "사진",
-          payload: {},
-          width: 960,
-          height: 620,
-        });
-      } else if (id === "music") {
-        openWindow({
-          id: "music-main",
-          kind: "music",
-          title: "음악",
-          payload: {},
-          width: 960,
-          height: 600,
-        });
-      } else if (id === "notes") {
-        openWindow({
-          id: "notes-main",
-          kind: "notes",
-          title: "메모",
-          payload: {},
-          width: 860,
-          height: 540,
-        });
-      }
+      const app = APPS.find((a) => a.id === id);
+      if (!app?.window) return;
+      const { kind, title, width, height } = app.window;
+      const payload = kind === "finder" ? { folderId: "projects" } : {};
+      openWindow({ id: `${kind}-main`, kind, title, payload, width, height });
     },
     [openWindow]
   );
