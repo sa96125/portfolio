@@ -8,7 +8,7 @@ interface Tab {
   url: string;
 }
 
-let nextTabId = 4;
+let nextTabId = 5;
 
 const INITIAL_TABS: Tab[] = [
   {
@@ -25,6 +25,11 @@ const INITIAL_TABS: Tab[] = [
     id: "3",
     title: "Hyundai Robotics Lab",
     url: "https://robotics.hyundai.com/lab/about.do",
+  },
+  {
+    id: "4",
+    title: "Refind Products",
+    url: "https://products.refind.kr/31aa2d7f-56e3-8062-a7b4-d5c07d411b2f",
   },
 ];
 
