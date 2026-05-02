@@ -7,6 +7,8 @@ interface DockApp {
   id: string;
   label: string;
   icon: string;
+  badge?: number;
+  bounce?: boolean;
 }
 
 const ICON_SIZE = 50;
@@ -20,11 +22,10 @@ const APPS: DockApp[] = [
   { id: "safari", label: "Safari", icon: "/dock-icons/safari.png" },
   { id: "vscode", label: "Visual Studio Code", icon: "/dock-icons/vscode.png" },
   { id: "docker", label: "Docker", icon: "/dock-icons/docker.png" },
-  { id: "claude", label: "Claude", icon: "/dock-icons/claude.png" },
   { id: "intellij", label: "IntelliJ IDEA", icon: "/dock-icons/intellij.png" },
   { id: "datagrip", label: "DataGrip", icon: "/dock-icons/datagrip.png" },
   { id: "photos", label: "사진", icon: "/dock-icons/photos.png" },
-  { id: "notes", label: "메모", icon: "/dock-icons/notes.png" },
+  { id: "notes", label: "메모", icon: "/dock-icons/notes.png", badge: 1, bounce: true },
   { id: "music", label: "음악", icon: "/dock-icons/music.png" },
   { id: "settings", label: "시스템 설정", icon: "/dock-icons/settings.png" },
 ];
@@ -54,6 +55,33 @@ export default function Dock() {
           payload: {},
           width: 1024,
           height: 680,
+        });
+      } else if (id === "photos") {
+        openWindow({
+          id: "photos-main",
+          kind: "photos",
+          title: "사진",
+          payload: {},
+          width: 960,
+          height: 620,
+        });
+      } else if (id === "music") {
+        openWindow({
+          id: "music-main",
+          kind: "music",
+          title: "음악",
+          payload: {},
+          width: 960,
+          height: 600,
+        });
+      } else if (id === "notes") {
+        openWindow({
+          id: "notes-main",
+          kind: "notes",
+          title: "메모",
+          payload: {},
+          width: 860,
+          height: 540,
         });
       }
     },
@@ -104,6 +132,8 @@ export default function Dock() {
             label={app.label}
             icon={<AppIcon src={app.icon} alt={app.label} draggable={false} />}
             scale={getScale(i)}
+            badge={app.badge}
+            bounce={app.bounce}
             onClick={clickHandlers[app.id]}
           />
         ))}
@@ -146,3 +176,4 @@ const AppIcon = styled.img`
   user-select: none;
   pointer-events: none;
 `;
+

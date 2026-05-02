@@ -11,6 +11,9 @@ import { useGlobalStore } from "../../store/useGlobalStore";
 import { TITLEBAR_H, MAX_WIN_H } from "../../types/window";
 
 const SafariApp = lazy(() => import("../safari/SafariApp"));
+const NotesApp = lazy(() => import("../notes/NotesApp"));
+const MusicApp = lazy(() => import("../music/MusicApp"));
+const PhotosApp = lazy(() => import("../photos/PhotosApp"));
 const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
 const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
 const DataCollectionPipelineViewerApp = lazy(() => import("../viewer/DataCollectionPipelineViewerApp"));
@@ -106,7 +109,7 @@ export default function Desktop() {
         <WindowFrame
           key={win.id}
           win={win}
-          dark={win.kind === "finder" || win.kind === "viewer" || win.kind === "pdf" || win.kind === "video" || win.kind === "safari"}
+          dark={win.kind === "finder" || win.kind === "viewer" || win.kind === "pdf" || win.kind === "video" || win.kind === "safari" || win.kind === "notes" || win.kind === "music" || win.kind === "photos"}
           toolbarContent={win.kind === "finder" ? <FinderToolbar /> : undefined}
         >
           {win.kind === "viewer" && (
@@ -147,6 +150,21 @@ export default function Desktop() {
                     ? <DataCollectionPipelineViewerApp />
                     : <PdfViewerApp />
               }
+            </Suspense>
+          )}
+          {win.kind === "notes" && (
+            <Suspense fallback={null}>
+              <NotesApp />
+            </Suspense>
+          )}
+          {win.kind === "music" && (
+            <Suspense fallback={null}>
+              <MusicApp />
+            </Suspense>
+          )}
+          {win.kind === "photos" && (
+            <Suspense fallback={null}>
+              <PhotosApp />
             </Suspense>
           )}
         </WindowFrame>

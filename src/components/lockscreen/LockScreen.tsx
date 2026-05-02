@@ -152,6 +152,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #000;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
 
   &[data-unlocking="true"] {
@@ -163,7 +164,7 @@ const Container = styled.div`
 const Bg = styled.div`
   position: absolute;
   inset: 0;
-  background: url("/wallpaper.jpg") center / cover no-repeat;
+  background: #000 url("/wallpaper.jpg") center / cover no-repeat;
   filter: brightness(0.65) saturate(1.1);
 `;
 
