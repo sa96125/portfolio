@@ -131,11 +131,11 @@ const Glass = styled.div`
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
   box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.06),
+    0 0 0 0.5px rgba(0, 0, 0, 0.04),
     0 8px 40px rgba(0, 0, 0, 0.12),
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.7);
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
 `;
 
 const AppIcon = styled.img`
