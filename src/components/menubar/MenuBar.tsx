@@ -20,6 +20,7 @@ export default function MenuBar() {
                 <Item onSelect={() => window.open("https://github.com/sa96125/", "_blank")}>
                   GitHub
                 </Item>
+                <Separator />
                 <Item onSelect={() => window.location.assign("mailto:sa96125@gmail.com")}>
                   이메일 보내기
                 </Item>
@@ -84,13 +85,9 @@ const Bar = styled.header`
   left: 0;
   right: 0;
   height: 28px;
-  background: linear-gradient(
-    180deg,
-    rgba(248, 243, 232, 0.55) 0%,
-    rgba(248, 243, 232, 0.3) 100%
-  );
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(24px) saturate(175%);
+  -webkit-backdrop-filter: blur(24px) saturate(175%);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -133,15 +130,16 @@ const Trigger = styled(Menubar.Trigger)`
 
 const Content = styled(Menubar.Content)`
   min-width: 220px;
-  background: rgba(40, 40, 42, 0.65);
-  backdrop-filter: blur(80px) saturate(200%);
-  -webkit-backdrop-filter: blur(80px) saturate(200%);
-  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  background: rgba(52, 44, 44, 0.6);
+  backdrop-filter: blur(32px) saturate(170%);
+  -webkit-backdrop-filter: blur(32px) saturate(170%);
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 8px;
   box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.3),
-    0 12px 40px rgba(0, 0, 0, 0.35);
-  padding: 4px;
+    0 0 0 0.5px rgba(0, 0, 0, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.1);
+  padding: 5px;
   z-index: 1000;
   animation: dropdownIn 0.12s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -160,8 +158,8 @@ const Content = styled(Menubar.Content)`
 const Item = styled(Menubar.Item)`
   font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: 5px;
   cursor: default;
   outline: none;
   user-select: none;
@@ -178,6 +176,11 @@ const Item = styled(Menubar.Item)`
   }
 `;
 
+const Separator = styled(Menubar.Separator)`
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 4px 10px;
+`;
 
 const ItemContent = styled.div`
   display: flex;

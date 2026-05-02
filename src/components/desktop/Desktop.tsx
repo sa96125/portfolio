@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { lazy, Suspense, useCallback } from "react";
+import { lazy, Suspense, useCallback, useState } from "react";
 import Wallpaper from "./Wallpaper";
+import DesktopContextMenu from "./DesktopContextMenu";
 import DesktopIcon from "./DesktopIcon";
 import WindowFrame from "../window/WindowFrame";
 import ViewerApp from "../viewer/ViewerApp";
@@ -121,15 +122,23 @@ export default function Desktop() {
   }, [openWindow]);
 
 
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setCtxMenu({ x: e.clientX, y: e.clientY });
+  }, []);
+
   const handleDesktopClick = useCallback(() => {
     clearSelection();
+    setCtxMenu(null);
   }, [clearSelection]);
 
   return (
     <>
       <Wallpaper />
 
-      <DesktopArea onMouseDown={handleDesktopClick}>
+      <DesktopArea onMouseDown={handleDesktopClick} onContextMenu={handleContextMenu}>
         <IconArea>
           <DesktopIcon
             id="icon-wife"
@@ -153,6 +162,14 @@ export default function Desktop() {
           />
         </IconArea>
       </DesktopArea>
+
+      {ctxMenu && (
+        <DesktopContextMenu
+          x={ctxMenu.x}
+          y={ctxMenu.y}
+          onClose={() => setCtxMenu(null)}
+        />
+      )}
 
       {windows.map((win) => (
         <WindowFrame

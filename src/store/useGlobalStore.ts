@@ -22,6 +22,8 @@ interface GlobalState {
   pendingSafariUrl: string | null;
   openInSafari: (url: string) => void;
   clearPendingSafariUrl: () => void;
+  wallpaper: string;
+  setWallpaper: (path: string) => void;
 }
 
 let msgId = 0;
@@ -47,4 +49,6 @@ export const useGlobalStore = create<GlobalState>((set) => ({
   pendingSafariUrl: null,
   openInSafari: (url) => set({ pendingSafariUrl: url }),
   clearPendingSafariUrl: () => set({ pendingSafariUrl: null }),
+  wallpaper: "/wallpaper.jpg",
+  setWallpaper: (path) => set({ wallpaper: path }),
 }));
