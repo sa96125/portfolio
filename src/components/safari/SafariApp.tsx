@@ -27,11 +27,6 @@ const INITIAL_TABS: Tab[] = [
     title: "Hyundai Robotics Lab",
     url: "https://robotics.hyundai.com/lab/about.do",
   },
-  // {
-  //   id: "4",
-  //   title: "Refind Products",
-  //   url: "https://products.refind.kr/31aa2d7f-56e3-8062-a7b4-d5c07d411b2f",
-  // },
 ];
 
 export default function SafariApp() {
