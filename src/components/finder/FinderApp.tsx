@@ -321,6 +321,7 @@ const SortArrow = styled.span`
 const FileList = styled.div`
   flex: 1;
   overflow-y: auto;
+  user-select: none;
 
   &::-webkit-scrollbar {
     width: 8px;
