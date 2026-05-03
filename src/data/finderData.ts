@@ -63,7 +63,7 @@ export const FOLDER_CONTENTS: Record<string, FileItem[]> = {
     { name: "유지보수-클라우드캐스트2.png", dateModified: "May 1, 2026", size: "480 KB", kind: "PNG", docPath: "y5c2f9.png" },
   ],
   "워크스페이스": [
-    { name: "side-project9-api", dateModified: "May 2, 2026", size: "—", kind: "Link", url: "https://beep-production-7c5e.up.railway.app/swagger-ui/index.html" },
+    { name: "사이드프로젝트9-api", dateModified: "May 2, 2026", size: "—", kind: "Link", url: "https://beep-production-7c5e.up.railway.app/swagger-ui/index.html" },
   ],
   "내 문서": [
     { name: "증명서_AWS_Certified_Developer_Associate.pdf", dateModified: "May 1, 2026", size: "49 KB", kind: "PDF", docPath: "d4a1b7.pdf" },
