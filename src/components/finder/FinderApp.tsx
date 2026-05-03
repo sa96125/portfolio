@@ -174,7 +174,7 @@ export default function FinderApp() {
           <AlertBox onClick={(e) => e.stopPropagation()}>
             <AlertTitle>"{lockedAlert}" 폴더는 잠겨 있습니다</AlertTitle>
             <AlertMessage>
-              고객사 보안 정책(NDA)에 따라<br />
+              L사 보안 정책에 따라<br />
               프로젝트 내용을 공개할 수 없습니다.
             </AlertMessage>
             <AlertBtn onClick={() => setLockedAlert(null)}>확인</AlertBtn>
