@@ -3,7 +3,6 @@ import { useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { Lock } from "lucide-react";
 import { useWindows } from "../../hooks/useWindows";
-import { useGlobalStore } from "../../store/useGlobalStore";
 import { SIDEBAR_SECTIONS, FOLDER_CONTENTS } from "../../data/finderData";
 import type { FileItem } from "../../data/finderData";
 import { TITLEBAR_H, MAX_WIN_H, MAX_WIN_W } from "../../types/window";
@@ -25,16 +24,7 @@ export default function FinderApp() {
       lastClickTime.current = 0;
       lastClickIdx.current = -1;
       if (item.url) {
-        const { openInSafari } = useGlobalStore.getState();
-        openInSafari(item.url);
-        openWindow({
-          id: "safari-main",
-          kind: "safari",
-          title: "Safari",
-          payload: {},
-          width: 1024,
-          height: 680,
-        });
+        window.open(item.url, "_blank");
         return;
       }
       if (item.name.endsWith(".pdf")) {
