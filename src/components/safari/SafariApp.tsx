@@ -6,6 +6,7 @@ interface Tab {
   id: string;
   title: string;
   url: string;
+  hideUrl?: boolean;
 }
 
 let nextTabId = 4;
@@ -45,7 +46,7 @@ export default function SafariApp() {
     (id: string) => {
       setActiveTabId(id);
       const tab = tabs.find((t) => t.id === id);
-      if (tab) setAddressValue(tab.url);
+      if (tab) setAddressValue(tab.hideUrl ? tab.title : tab.url);
     },
     [tabs]
   );
@@ -60,7 +61,7 @@ export default function SafariApp() {
           const idx = prev.findIndex((t) => t.id === id);
           const newActive = next[Math.min(idx, next.length - 1)];
           setActiveTabId(newActive.id);
-          setAddressValue(newActive.url);
+          setAddressValue(newActive.hideUrl ? newActive.title : newActive.url);
         }
         return next;
       });
@@ -106,7 +107,7 @@ export default function SafariApp() {
   );
 
   useEffect(() => {
-    if (activeTab) setAddressValue(activeTab.url);
+    if (activeTab) setAddressValue(activeTab.hideUrl ? activeTab.title : activeTab.url);
   }, [activeTabId]);
 
   // 외부에서 Safari로 URL 열기
@@ -117,7 +118,7 @@ export default function SafariApp() {
     if (!pendingUrl) return;
     const id = String(nextTabId++);
     const title = pendingTitle ?? (() => { try { return new URL(pendingUrl).hostname; } catch { return pendingUrl; } })();
-    const newTab: Tab = { id, title, url: pendingUrl };
+    const newTab: Tab = { id, title, url: pendingUrl, hideUrl: !!pendingTitle };
     setTabs((prev) => [...prev, newTab]);
     setActiveTabId(id);
     setAddressValue(title);
