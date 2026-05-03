@@ -26,7 +26,7 @@ export default function FinderApp() {
       lastClickIdx.current = -1;
       if (item.url) {
         const { openInSafari } = useGlobalStore.getState();
-        openInSafari(item.url);
+        openInSafari(item.url, item.name);
         openWindow({
           id: "safari-main",
           kind: "safari",

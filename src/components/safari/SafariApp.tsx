@@ -111,18 +111,18 @@ export default function SafariApp() {
 
   // 외부에서 Safari로 URL 열기
   const pendingUrl = useGlobalStore((s) => s.pendingSafariUrl);
+  const pendingTitle = useGlobalStore((s) => s.pendingSafariTitle);
   const clearPendingUrl = useGlobalStore((s) => s.clearPendingSafariUrl);
   useEffect(() => {
     if (!pendingUrl) return;
     const id = String(nextTabId++);
-    let hostname = pendingUrl;
-    try { hostname = new URL(pendingUrl).hostname; } catch {}
-    const newTab: Tab = { id, title: hostname, url: pendingUrl };
+    const title = pendingTitle ?? (() => { try { return new URL(pendingUrl).hostname; } catch { return pendingUrl; } })();
+    const newTab: Tab = { id, title, url: pendingUrl };
     setTabs((prev) => [...prev, newTab]);
     setActiveTabId(id);
-    setAddressValue(pendingUrl);
+    setAddressValue(title);
     clearPendingUrl();
-  }, [pendingUrl, clearPendingUrl]);
+  }, [pendingUrl, pendingTitle, clearPendingUrl]);
 
   return (
     <Wrapper>

@@ -20,7 +20,8 @@ interface GlobalState {
   messages: Message[];
   addMessage: (role: "user" | "assistant", content: string) => void;
   pendingSafariUrl: string | null;
-  openInSafari: (url: string) => void;
+  pendingSafariTitle: string | null;
+  openInSafari: (url: string, title?: string) => void;
   clearPendingSafariUrl: () => void;
   wallpaper: string;
   setWallpaper: (path: string) => void;
@@ -47,8 +48,9 @@ export const useGlobalStore = create<GlobalState>((set) => ({
       ],
     })),
   pendingSafariUrl: null,
-  openInSafari: (url) => set({ pendingSafariUrl: url }),
-  clearPendingSafariUrl: () => set({ pendingSafariUrl: null }),
+  pendingSafariTitle: null,
+  openInSafari: (url, title) => set({ pendingSafariUrl: url, pendingSafariTitle: title ?? null }),
+  clearPendingSafariUrl: () => set({ pendingSafariUrl: null, pendingSafariTitle: null }),
   wallpaper: "/wallpaper.jpg",
   setWallpaper: (path) => set({ wallpaper: path }),
 }));
