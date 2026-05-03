@@ -402,7 +402,7 @@ function ApiFileIcon() {
         <path d="M8 2h14l8 8v22a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2z" fill="#3a3a3a" stroke="#555" strokeWidth="1" />
         <path d="M22 2v6a2 2 0 002 2h6" fill="#444" stroke="#555" strokeWidth="1" strokeLinejoin="round" />
         <rect x="7" y="24" width="22" height="10" rx="1" fill="#34c759" />
-        <text x="18" y="31" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="700" fontFamily="system-ui">API</text>
+        <text x="18" y="29" textAnchor="middle" dominantBaseline="central" fill="#fff" fontSize="7" fontWeight="700" fontFamily="system-ui">API</text>
       </svg>
     </FileIconWrap>
   );
