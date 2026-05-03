@@ -16,6 +16,8 @@ export interface FileItem {
   isFolder?: boolean;
   /** docs/ 폴더 내 실제 파일명 (회사 접두어 포함) */
   docPath?: string;
+  /** 더블클릭 시 Safari에서 열 URL */
+  url?: string;
 }
 
 export const SIDEBAR_SECTIONS: SidebarSection[] = [
@@ -23,7 +25,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     label: "Favorites",
     folders: [
       { name: "내 문서" },
-      { name: "사이드프로젝트" },
+      { name: "워크스페이스" },
     ],
   },
   {
@@ -60,7 +62,9 @@ export const FOLDER_CONTENTS: Record<string, FileItem[]> = {
     { name: "유지보수-클라우드캐스트1.png", dateModified: "May 1, 2026", size: "650 KB", kind: "PNG", docPath: "x1e7b4.png" },
     { name: "유지보수-클라우드캐스트2.png", dateModified: "May 1, 2026", size: "480 KB", kind: "PNG", docPath: "y5c2f9.png" },
   ],
-  "사이드프로젝트": [],
+  "워크스페이스": [
+    { name: "side-project9-api", dateModified: "May 2, 2026", size: "—", kind: "Link" },
+  ],
   "내 문서": [
     { name: "증명서_AWS_Certified_Developer_Associate.pdf", dateModified: "May 1, 2026", size: "49 KB", kind: "PDF", docPath: "d4a1b7.pdf" },
     { name: "증명서_Certificate_4_in_QAT(AUS).pdf", dateModified: "May 1, 2026", size: "364 KB", kind: "PDF", docPath: "e8c3f6.pdf" },
