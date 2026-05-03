@@ -23,6 +23,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     label: "Favorites",
     folders: [
       { name: "내 문서" },
+      { name: "사이드프로젝트" },
     ],
   },
   {
@@ -32,7 +33,6 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       { name: "텍슨" },
       { name: "오큐브", locked: true },
       { name: "노크" },
-      { name: "수자원공사(계약)", locked: true },
     ],
   },
 ];
@@ -60,8 +60,7 @@ export const FOLDER_CONTENTS: Record<string, FileItem[]> = {
     { name: "유지보수-클라우드캐스트1.png", dateModified: "May 1, 2026", size: "650 KB", kind: "PNG", docPath: "x1e7b4.png" },
     { name: "유지보수-클라우드캐스트2.png", dateModified: "May 1, 2026", size: "480 KB", kind: "PNG", docPath: "y5c2f9.png" },
   ],
-  "수자원공사(계약)": [],
-
+  "사이드프로젝트": [],
   "내 문서": [
     { name: "증명서_AWS_Certified_Developer_Associate.pdf", dateModified: "May 1, 2026", size: "49 KB", kind: "PDF", docPath: "d4a1b7.pdf" },
     { name: "증명서_Certificate_4_in_QAT(AUS).pdf", dateModified: "May 1, 2026", size: "364 KB", kind: "PDF", docPath: "e8c3f6.pdf" },
