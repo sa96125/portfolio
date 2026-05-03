@@ -177,7 +177,7 @@ export default function SafariApp() {
             key={activeTab.id}
             src={activeTab.url}
             title={activeTab.title}
-            sandbox="allow-scripts allow-popups allow-forms"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
           />
         ) : (
           <EmptyPage>
