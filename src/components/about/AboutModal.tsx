@@ -18,7 +18,7 @@ export default function AboutModal() {
   if (!isOpen) return null;
 
   return (
-    <Overlay onClick={close}>
+    <Overlay onClick={close} onContextMenu={(e) => { e.preventDefault(); close(); }}>
       <Panel onClick={(e) => e.stopPropagation()}>
         {/* Traffic Lights */}
         <TrafficLights>
