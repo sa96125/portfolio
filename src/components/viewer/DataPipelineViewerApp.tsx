@@ -37,16 +37,16 @@ export default function DataPipelineViewerApp() {
         {/* 메트릭 */}
         <MetricRow>
           <Metric>
-            <MetricValue>15만평</MetricValue>
+            <MetricValue>17만평</MetricValue>
             <MetricLabel>사유지 GIS DB 자체 구축</MetricLabel>
           </Metric>
           <Metric>
-            <MetricValue>2억+</MetricValue>
-            <MetricLabel>외주 견적 절감</MetricLabel>
+            <MetricValue>8천만+</MetricValue>
+            <MetricLabel>외주 비용 절감</MetricLabel>
           </Metric>
           <Metric>
-            <MetricValue>400~600</MetricValue>
-            <MetricLabel>일평균 사용자 안정 운영</MetricLabel>
+            <MetricValue>0원</MetricValue>
+            <MetricLabel>좌표 수집 운영 비용</MetricLabel>
           </Metric>
         </MetricRow>
 
