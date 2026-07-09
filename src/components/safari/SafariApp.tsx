@@ -9,7 +9,7 @@ interface Tab {
   hideUrl?: boolean;
 }
 
-let nextTabId = 4;
+let nextTabId = 6;
 
 const INITIAL_TABS: Tab[] = [
   {
@@ -28,6 +28,17 @@ const INITIAL_TABS: Tab[] = [
     // watch URL은 iframe 차단이라 embed URL 사용
     url: "https://www.youtube.com/embed/zgx6TYsT83k",
     hideUrl: true,
+  },
+  {
+    id: "4",
+    title: "걸어서 SiC 속으로 - SK실트론 CSS",
+    url: "https://www.youtube.com/embed/-AkxcSb9lII",
+    hideUrl: true,
+  },
+  {
+    id: "5",
+    title: "SK실트론의 웨이퍼 이야기",
+    url: "https://www.skcareersjournal.com/2116",
   },
 ];
 
