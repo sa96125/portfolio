@@ -9,7 +9,7 @@ interface Tab {
   hideUrl?: boolean;
 }
 
-let nextTabId = 4;
+let nextTabId = 3;
 
 const INITIAL_TABS: Tab[] = [
   {
@@ -19,13 +19,8 @@ const INITIAL_TABS: Tab[] = [
   },
   {
     id: "2",
-    title: "현대자동차그룹",
-    url: "https://www.hyundaimotorgroup.com/ko/story/CONT0000000000178954",
-  },
-  {
-    id: "3",
-    title: "Hyundai Robotics Lab",
-    url: "https://robotics.hyundai.com/lab/about.do",
+    title: "SK실트론",
+    url: "https://www.sksiltron.com/ko/company/summary.do",
   },
 ];
 
