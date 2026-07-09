@@ -41,9 +41,9 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
 
 export const FOLDER_CONTENTS: Record<string, FileItem[]> = {
   "TC인텔리전스": [
-    { name: "회고-챗봇.pdf", dateModified: "Apr 28, 2026", size: "12 KB", kind: "PDF" },
-    { name: "회고-도슨트네비게이션.pdf", dateModified: "Apr 28, 2026", size: "8 KB", kind: "PDF" },
-    { name: "설계-데이터파이프라인-좌표수집.pdf", dateModified: "May 1, 2026", size: "2 KB", kind: "PDF" },
+    { name: "회고-사내AI챗봇-GPU인프라.pdf", dateModified: "Apr 28, 2026", size: "12 KB", kind: "PDF" },
+    { name: "회고-GIS맞춤형내비게이션.pdf", dateModified: "Apr 28, 2026", size: "8 KB", kind: "PDF" },
+    { name: "설계-데이터수집-자동화.pdf", dateModified: "Jul 9, 2026", size: "3 KB", kind: "PDF" },
     { name: "설계-온톨로지-조직도.png", dateModified: "May 1, 2026", size: "186 KB", kind: "PNG", docPath: "j2a6d4.png" },
     { name: "개발-챗봇-첨부파일요약.png", dateModified: "May 1, 2026", size: "320 KB", kind: "PNG", docPath: "k8e1b5.png" },
   ],

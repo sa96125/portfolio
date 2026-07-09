@@ -27,7 +27,7 @@ export default function PdfViewerApp() {
   return (
     <Container>
       <Page>
-        <PageTitle>STAR : RAG 기반 챗봇 구축</PageTitle>
+        <PageTitle>STAR : 사내 AI 챗봇 · GPU 인프라 구축</PageTitle>
         <TagLine>10만건의 문서 지식을 주입한 AI 챗봇 개발 경험</TagLine>
         <Divider />
 

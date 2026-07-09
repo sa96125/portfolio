@@ -27,7 +27,7 @@ export default function DataPipelineViewerApp() {
   return (
     <Container>
       <Page>
-        <PageTitle>도슨트 및 추천 경로 네비게이션 구축</PageTitle>
+        <PageTitle>음영 지역 내 GIS 기반 맞춤형 내비게이션 구축</PageTitle>
         <TagLine>
           비전공 영역인 공간 데이터를 자체 구축하고, AI 도슨트 네비게이션
           시스템을 설계한 경험
