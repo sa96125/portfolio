@@ -9,7 +9,7 @@ interface Tab {
   hideUrl?: boolean;
 }
 
-let nextTabId = 6;
+let nextTabId = 7;
 
 const INITIAL_TABS: Tab[] = [
   {
@@ -39,6 +39,11 @@ const INITIAL_TABS: Tab[] = [
     id: "5",
     title: "SK실트론의 웨이퍼 이야기",
     url: "https://www.skcareersjournal.com/2116",
+  },
+  {
+    id: "6",
+    title: "생산현장의 생산정보 데이터베이스",
+    url: "https://www.skcareersjournal.com/3432",
   },
 ];
 
