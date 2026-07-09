@@ -66,6 +66,7 @@ export const FOLDER_CONTENTS: Record<string, FileItem[]> = {
     { name: "사이드프로젝트9-api", dateModified: "May 2, 2026", size: "—", kind: "Link", url: "https://beep-production-7c5e.up.railway.app/swagger-ui/index.html" },
   ],
   "내 문서": [
+    { name: "경력기술서_SK실트론_IT인프라.pdf", dateModified: "Jul 9, 2026", size: "1.1 MB", kind: "PDF", docPath: "m6d3e8.pdf" },
     { name: "증명서_AWS_Certified_Developer_Associate.pdf", dateModified: "May 1, 2026", size: "49 KB", kind: "PDF", docPath: "d4a1b7.pdf" },
     { name: "증명서_Certificate_4_in_QAT(AUS).pdf", dateModified: "May 1, 2026", size: "364 KB", kind: "PDF", docPath: "e8c3f6.pdf" },
   ],

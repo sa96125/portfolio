@@ -44,8 +44,8 @@ const INITIAL_TABS: Tab[] = [
 
 export default function SafariApp() {
   const [tabs, setTabs] = useState<Tab[]>(INITIAL_TABS);
-  const [activeTabId, setActiveTabId] = useState("2");
-  const [addressValue, setAddressValue] = useState(INITIAL_TABS[1].url);
+  const [activeTabId, setActiveTabId] = useState("5");
+  const [addressValue, setAddressValue] = useState(INITIAL_TABS[4].url);
   const addressRef = useRef<HTMLInputElement>(null);
 
   const activeTab = tabs.find((t) => t.id === activeTabId);
