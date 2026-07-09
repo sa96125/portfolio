@@ -9,7 +9,8 @@ interface Note {
 }
 
 /* ─── Helpers ──────────────────────────────────────── */
-const LS_KEY = "macos-notes";
+// 기본 노트 내용이 바뀌면 키를 버전업해야 기존 방문자의 캐시를 무효화할 수 있음
+const LS_KEY = "macos-notes-v2";
 
 function loadNotes(): Note[] {
   try {
