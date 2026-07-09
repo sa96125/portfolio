@@ -233,8 +233,9 @@ export default function DataPipelineViewerApp() {
         <Section>
           <SubTitle>2. 입장 시간대 트래픽 집중 + 대량 데이터 처리</SubTitle>
           <Text>
-            일평균 400~600명, 입장 시간대(오전 10시) 동시 접속 50+, 수백 개 POI,
-            다국어 음성 수천 개를 효율적으로 처리해야 했습니다.
+            사유원은 일평균 400~600명이 방문하고 입장이 오전 10시대에
+            집중됩니다. 오픈 시 이 트래픽과 수백 개 POI, 다국어 음성 수천 개를
+            감당할 수 있도록 설계 단계에서 대비했습니다.
           </Text>
           <List>
             <li>위치 추적 / POI 진입 감지: 클라이언트 처리 → 서버 부하 최소화</li>
@@ -244,8 +245,8 @@ export default function DataPipelineViewerApp() {
             <li>백엔드: 가벼운 API만 담당</li>
           </List>
           <NextArrow>
-            → "실시간 처리와 정적 자원을 명확히 분리"한 설계로 단순한 인프라로
-            안정 운영 확보
+            → "실시간 처리와 정적 자원을 명확히 분리"해 단순한 인프라로도
+            안정 운영이 가능한 구조 확보
           </NextArrow>
         </Section>
 
