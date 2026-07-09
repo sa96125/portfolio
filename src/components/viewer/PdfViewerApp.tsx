@@ -198,6 +198,7 @@ export default function PdfViewerApp() {
             <li><strong>Step 6.</strong> Hit Score 체계</li>
             <li><strong>Step 7.</strong> 온톨로지 구축 (GraphDB)</li>
           </List>
+          <Teaser>정확도 70%를 95%까지 끌어올린 각 단계의 이야기는… 면접에서 계속</Teaser>
         </Section>
 
         <SectionDivider>문제해결</SectionDivider>
@@ -248,6 +249,14 @@ export default function PdfViewerApp() {
 }
 
 /* ── PdfViewerApp 고유 컴포넌트 ── */
+
+const Teaser = styled.div`
+  margin-top: 10px;
+  font-size: 12px;
+  font-style: italic;
+  color: #999;
+  text-align: right;
+`;
 
 const Ref = styled.div`
   font-size: 12px;
