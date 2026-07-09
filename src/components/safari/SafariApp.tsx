@@ -9,7 +9,7 @@ interface Tab {
   hideUrl?: boolean;
 }
 
-let nextTabId = 3;
+let nextTabId = 4;
 
 const INITIAL_TABS: Tab[] = [
   {
@@ -21,6 +21,13 @@ const INITIAL_TABS: Tab[] = [
     id: "2",
     title: "SK실트론",
     url: "https://www.sksiltron.com/ko/company/summary.do",
+  },
+  {
+    id: "3",
+    title: "맛칩Chip투어 - 실리콘 웨이퍼 편",
+    // watch URL은 iframe 차단이라 embed URL 사용
+    url: "https://www.youtube.com/embed/zgx6TYsT83k",
+    hideUrl: true,
   },
 ];
 
