@@ -18,7 +18,6 @@ const MusicApp = lazy(() => import("../music/MusicApp"));
 const PhotosApp = lazy(() => import("../photos/PhotosApp"));
 const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
 const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
-const AutomationPipelineViewerApp = lazy(() => import("../viewer/AutomationPipelineViewerApp"));
 
 function renderWindowContent(win: WindowState) {
   switch (win.kind) {
@@ -48,8 +47,6 @@ function renderWindowContent(win: WindowState) {
             />
           ) : win.payload.file === "회고-GIS맞춤형내비게이션.pdf" ? (
             <DataPipelineViewerApp />
-          ) : win.payload.file === "설계-데이터수집-자동화.pdf" ? (
-            <AutomationPipelineViewerApp />
           ) : (
             <PdfViewerApp />
           )}
