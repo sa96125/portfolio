@@ -9,7 +9,7 @@ interface Tab {
   hideUrl?: boolean;
 }
 
-let nextTabId = 7;
+let nextTabId = 8;
 
 const INITIAL_TABS: Tab[] = [
   {
@@ -45,12 +45,17 @@ const INITIAL_TABS: Tab[] = [
     title: "생산현장의 생산정보 데이터베이스",
     url: "https://www.skcareersjournal.com/3432",
   },
+  {
+    id: "7",
+    title: "SK실트론 - SK커리어스저널",
+    url: "https://www.skcareersjournal.com/3392",
+  },
 ];
 
 export default function SafariApp() {
   const [tabs, setTabs] = useState<Tab[]>(INITIAL_TABS);
-  const [activeTabId, setActiveTabId] = useState("5");
-  const [addressValue, setAddressValue] = useState(INITIAL_TABS[4].url);
+  const [activeTabId, setActiveTabId] = useState("7");
+  const [addressValue, setAddressValue] = useState(INITIAL_TABS[6].url);
   const addressRef = useRef<HTMLInputElement>(null);
 
   const activeTab = tabs.find((t) => t.id === activeTabId);
