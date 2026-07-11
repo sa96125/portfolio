@@ -1,28 +1,29 @@
 import styled from "@emotion/styled";
 import { useEffect, useMemo, useRef, useState } from "react";
-import appTsx from "../../App.tsx?raw";
+import atomicRaw from "./samples/atomic-design.txt?raw";
+import compoundRaw from "./samples/compound-tabs.txt?raw";
+import composeRaw from "./samples/docker-compose.yml?raw";
 import useWindowsTs from "../../hooks/useWindows.ts?raw";
-import dockTsx from "../dock/Dock.tsx?raw";
-import safariTsx from "../safari/SafariApp.tsx?raw";
 import designMd from "../../../DESIGN.md?raw";
-import packageJson from "../../../package.json?raw";
 
-/* ─── 실제 소스를 그대로 여는 에디터 — 이 파일 자체가 이 앱으로 열립니다 ─── */
+/* ─── 역량을 보여주는 파일만 선별해 여는 에디터 ───
+ * patterns/  : 팀에 전파해 온 컴포넌트 설계 패턴
+ * src/hooks/ : 이 포트폴리오의 실제 상태 설계 (Zustand)
+ * infra/     : 멀티 컨테이너 운영 원칙이 담긴 compose */
 
 interface FileEntry {
   name: string;
   path: string;
   content: string;
-  lang: "ts" | "md" | "json";
+  lang: "ts" | "md" | "yml";
 }
 
 const FILES: FileEntry[] = [
-  { name: "App.tsx", path: "src/App.tsx", content: appTsx, lang: "ts" },
+  { name: "atomic-design.tsx", path: "patterns/atomic-design.tsx", content: atomicRaw, lang: "ts" },
+  { name: "compound-tabs.tsx", path: "patterns/compound-tabs.tsx", content: compoundRaw, lang: "ts" },
   { name: "useWindows.ts", path: "src/hooks/useWindows.ts", content: useWindowsTs, lang: "ts" },
-  { name: "Dock.tsx", path: "src/components/dock/Dock.tsx", content: dockTsx, lang: "ts" },
-  { name: "SafariApp.tsx", path: "src/components/safari/SafariApp.tsx", content: safariTsx, lang: "ts" },
+  { name: "docker-compose.yml", path: "infra/docker-compose.yml", content: composeRaw, lang: "yml" },
   { name: "DESIGN.md", path: "DESIGN.md", content: designMd, lang: "md" },
-  { name: "package.json", path: "package.json", content: packageJson, lang: "json" },
 ];
 
 interface TreeFolder {
@@ -31,11 +32,10 @@ interface TreeFolder {
 }
 
 const TREE: TreeFolder[] = [
-  { label: "src", children: ["App.tsx"] },
+  { label: "patterns", children: ["atomic-design.tsx", "compound-tabs.tsx"] },
   { label: "src/hooks", children: ["useWindows.ts"] },
-  { label: "src/components/dock", children: ["Dock.tsx"] },
-  { label: "src/components/safari", children: ["SafariApp.tsx"] },
-  { label: "루트", children: ["DESIGN.md", "package.json"] },
+  { label: "infra", children: ["docker-compose.yml"] },
+  { label: "루트", children: ["DESIGN.md"] },
 ];
 
 /* 터미널 시나리오 */
@@ -66,7 +66,30 @@ const TOKEN_RE = new RegExp(
   "g"
 );
 
+function highlightYml(line: string) {
+  const hashIdx = line.indexOf("#");
+  const code = hashIdx >= 0 ? line.slice(0, hashIdx) : line;
+  const comment = hashIdx >= 0 ? line.slice(hashIdx) : "";
+  const m = code.match(/^(\s*-?\s*)([\w.-]+)(:)(.*)$/);
+  return (
+    <>
+      {m ? (
+        <>
+          <span>{m[1]}</span>
+          <Tok className="key">{m[2]}</Tok>
+          <span>{m[3]}</span>
+          <Tok className="str">{m[4]}</Tok>
+        </>
+      ) : (
+        <span>{code}</span>
+      )}
+      {comment && <Tok className="cm">{comment}</Tok>}
+    </>
+  );
+}
+
 function highlightLine(line: string, lang: FileEntry["lang"]) {
+  if (lang === "yml") return highlightYml(line);
   if (lang !== "ts") return <span>{line}</span>;
   const out: React.ReactNode[] = [];
   let last = 0;
@@ -212,7 +235,7 @@ export default function VSCodeApp() {
           <StatusRight>
             <span>Ln 1, Col 1</span>
             <span>UTF-8</span>
-            <span>{file.lang === "ts" ? "TypeScript React" : file.lang === "md" ? "Markdown" : "JSON"}</span>
+            <span>{file.lang === "ts" ? "TypeScript React" : file.lang === "md" ? "Markdown" : "YAML"}</span>
           </StatusRight>
         </StatusBar>
       </Main>
@@ -314,7 +337,7 @@ const FileDot = styled.span`
   background: #519aba;
 
   &[data-lang="md"] { background: #6997d5; border-radius: 50%; }
-  &[data-lang="json"] { background: #cbcb41; }
+  &[data-lang="yml"] { background: #cb4b4b; }
 `;
 
 const Main = styled.div`
@@ -407,6 +430,7 @@ const Tok = styled.span`
   &.str { color: #ce9178; }
   &.cm { color: #6a9955; }
   &.num { color: #b5cea8; }
+  &.key { color: #9cdcfe; }
 `;
 
 const Terminal = styled.div`

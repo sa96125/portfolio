@@ -15,12 +15,12 @@ export default function App() {
 
   useEffect(() => {
     openWindow({
-      id: "safari-main",
-      kind: "safari",
-      title: "Safari",
+      id: "help-main",
+      kind: "help",
+      title: "시작하기",
       payload: {},
-      width: 1024,
-      height: 680,
+      width: 500,
+      height: 520,
     });
   }, [openWindow]);
 

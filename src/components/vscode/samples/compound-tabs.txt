@@ -1,0 +1,59 @@
+/**
+ * 컴파운드 패턴 — Context로 상태를 공유하는 서브컴포넌트 집합
+ *
+ * <Tabs> 하나가 상태를 갖고, List/Trigger/Panel은 자기 역할만 안다.
+ * props drilling 없이 조합 순서·마크업을 사용하는 쪽이 자유롭게 결정.
+ *
+ * 사용 예:
+ *   <Tabs defaultValue="career">
+ *     <Tabs.List>
+ *       <Tabs.Trigger value="career">경력</Tabs.Trigger>
+ *       <Tabs.Trigger value="stack">기술</Tabs.Trigger>
+ *     </Tabs.List>
+ *     <Tabs.Panel value="career">...</Tabs.Panel>
+ *     <Tabs.Panel value="stack">...</Tabs.Panel>
+ *   </Tabs>
+ */
+import { createContext, useContext, useState } from "react";
+import type { ReactNode } from "react";
+
+interface TabsCtx {
+  active: string;
+  setActive: (v: string) => void;
+}
+
+const Ctx = createContext<TabsCtx | null>(null);
+
+function useTabs() {
+  const ctx = useContext(Ctx);
+  if (!ctx) throw new Error("Tabs.* 는 <Tabs> 안에서만 사용할 수 있습니다");
+  return ctx;
+}
+
+export function Tabs({ defaultValue, children }: { defaultValue: string; children: ReactNode }) {
+  const [active, setActive] = useState(defaultValue);
+  return <Ctx.Provider value={{ active, setActive }}>{children}</Ctx.Provider>;
+}
+
+Tabs.List = function List({ children }: { children: ReactNode }) {
+  return <div role="tablist">{children}</div>;
+};
+
+Tabs.Trigger = function Trigger({ value, children }: { value: string; children: ReactNode }) {
+  const { active, setActive } = useTabs();
+  return (
+    <button
+      role="tab"
+      aria-selected={active === value}
+      onClick={() => setActive(value)}
+    >
+      {children}
+    </button>
+  );
+};
+
+Tabs.Panel = function Panel({ value, children }: { value: string; children: ReactNode }) {
+  const { active } = useTabs();
+  if (active !== value) return null; // 비활성 패널은 렌더 자체를 생략
+  return <div role="tabpanel">{children}</div>;
+};

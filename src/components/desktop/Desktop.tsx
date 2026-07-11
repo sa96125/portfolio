@@ -20,6 +20,7 @@ const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
 const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
 const VSCodeApp = lazy(() => import("../vscode/VSCodeApp"));
 const DockerApp = lazy(() => import("../docker/DockerApp"));
+const HelpApp = lazy(() => import("../help/HelpApp"));
 
 function renderWindowContent(win: WindowState) {
   switch (win.kind) {
@@ -60,6 +61,8 @@ function renderWindowContent(win: WindowState) {
       return <Suspense fallback={null}><VSCodeApp /></Suspense>;
     case "docker":
       return <Suspense fallback={null}><DockerApp /></Suspense>;
+    case "help":
+      return <Suspense fallback={null}><HelpApp /></Suspense>;
     case "notes":
       return <Suspense fallback={null}><NotesApp /></Suspense>;
     case "music":

@@ -1,0 +1,74 @@
+/**
+ * 아토믹 디자인 — atom → molecule 조합 예시
+ *
+ * 오큐브(LG ThinQ) 시절 팀에 도입해 컴포넌트 재사용 체계를 정착시킨 방식.
+ * 원칙: atom은 스타일과 접근성만 안다. 조합과 상태는 상위가 책임진다.
+ */
+import styled from "@emotion/styled";
+
+/* ── atom: 변형은 prop으로, 하드코딩 금지 ── */
+type Variant = "primary" | "ghost";
+type Size = "sm" | "md";
+
+const PADDING: Record<Size, string> = { sm: "6px 12px", md: "10px 18px" };
+
+export const Button = styled.button<{ variant?: Variant; size?: Size }>`
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  padding: ${({ size = "md" }) => PADDING[size]};
+  background: ${({ variant = "primary" }) =>
+    variant === "primary" ? "var(--accent)" : "transparent"};
+  color: ${({ variant = "primary" }) =>
+    variant === "primary" ? "#fff" : "var(--accent)"};
+
+  &:focus-visible {
+    outline: 2px solid var(--accent); /* 접근성: 키보드 포커스 시각화 */
+    outline-offset: 2px;
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+`;
+
+export const Input = styled.input`
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+
+  &:focus {
+    border-color: var(--accent);
+  }
+`;
+
+/* ── molecule: atom을 조합, 도메인 지식은 여기부터 ── */
+interface SearchFieldProps {
+  value: string;
+  onChange: (v: string) => void;
+  onSubmit: () => void;
+  placeholder?: string;
+}
+
+export function SearchField({ value, onChange, onSubmit, placeholder }: SearchFieldProps) {
+  return (
+    <Row role="search">
+      <Input
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && onSubmit()}
+      />
+      <Button size="sm" onClick={onSubmit} disabled={!value.trim()}>
+        검색
+      </Button>
+    </Row>
+  );
+}
+
+const Row = styled.div`
+  display: flex;
+  gap: 8px;
+`;
