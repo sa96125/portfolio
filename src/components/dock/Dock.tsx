@@ -32,7 +32,7 @@ const APPS: DockApp[] = [
   { id: "safari",   label: "Safari",              icon: "/dock-icons/safari.png",   window: { kind: "safari",  title: "Safari",  width: 1024, height: 680 } },
   { id: "vscode",   label: "Visual Studio Code",  icon: "/dock-icons/vscode.png",   window: { kind: "vscode",  title: "portfolio — Visual Studio Code", width: 1100, height: 700 } },
   { id: "docker",   label: "Docker",              icon: "/dock-icons/docker.png",   window: { kind: "docker",  title: "Docker Desktop", width: 1040, height: 660 } },
-  { id: "intellij", label: "IntelliJ IDEA",       icon: "/dock-icons/intellij.png" },
+  { id: "intellij", label: "IntelliJ IDEA",       icon: "/dock-icons/intellij.png", window: { kind: "intellij", title: "storead-api — IntelliJ IDEA", width: 1080, height: 700 } },
   { id: "datagrip", label: "DataGrip",            icon: "/dock-icons/datagrip.png" },
   { id: "photos",   label: "사진",                icon: "/dock-icons/photos.png",   window: { kind: "photos",  title: "사진",    width: 960,  height: 620 } },
   { id: "notes",    label: "메모",                icon: "/dock-icons/notes.png",    window: { kind: "notes",   title: "메모",    width: 860,  height: 540 }, badge: 1, bounce: true },

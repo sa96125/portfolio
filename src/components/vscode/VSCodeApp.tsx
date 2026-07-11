@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useMemo, useRef, useState } from "react";
 import atomicRaw from "./samples/atomic-design.txt?raw";
 import compoundRaw from "./samples/compound-tabs.txt?raw";
+import petHookRaw from "./samples/use-pet-care.txt?raw";
 import composeRaw from "./samples/docker-compose.yml?raw";
 import useWindowsTs from "../../hooks/useWindows.ts?raw";
 import designMd from "../../../DESIGN.md?raw";
@@ -21,6 +22,7 @@ interface FileEntry {
 const FILES: FileEntry[] = [
   { name: "atomic-design.tsx", path: "patterns/atomic-design.tsx", content: atomicRaw, lang: "ts" },
   { name: "compound-tabs.tsx", path: "patterns/compound-tabs.tsx", content: compoundRaw, lang: "ts" },
+  { name: "use-pet-care.ts", path: "patterns/use-pet-care.ts", content: petHookRaw, lang: "ts" },
   { name: "useWindows.ts", path: "src/hooks/useWindows.ts", content: useWindowsTs, lang: "ts" },
   { name: "docker-compose.yml", path: "infra/docker-compose.yml", content: composeRaw, lang: "yml" },
   { name: "DESIGN.md", path: "DESIGN.md", content: designMd, lang: "md" },
@@ -32,7 +34,7 @@ interface TreeFolder {
 }
 
 const TREE: TreeFolder[] = [
-  { label: "patterns", children: ["atomic-design.tsx", "compound-tabs.tsx"] },
+  { label: "patterns", children: ["atomic-design.tsx", "compound-tabs.tsx", "use-pet-care.ts"] },
   { label: "src/hooks", children: ["useWindows.ts"] },
   { label: "infra", children: ["docker-compose.yml"] },
   { label: "루트", children: ["DESIGN.md"] },

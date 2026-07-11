@@ -1,0 +1,40 @@
+/**
+ * 서비스가 트랜잭션 경계.
+ * 조회는 readOnly로 분리해 커넥션·플러시 부담을 줄인다.
+ */
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class StoreAdService {
+
+    private final StoreAdRepository storeAdRepository;
+    private final MemberRepository memberRepository;
+
+    public Page<StoreAdResponse> findVisibleAds(Long complexId, Pageable pageable) {
+        return storeAdRepository
+                .findByComplexIdAndStatus(complexId, AdStatus.APPROVED, pageable)
+                .map(StoreAdResponse::from); // 엔티티는 계층 밖으로 내보내지 않는다
+    }
+
+    @Transactional
+    public Long create(Long memberId, StoreAdCreateRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        StoreAd ad = StoreAd.create(member, request.title(),
+                request.period(), request.imageKeys());
+
+        return storeAdRepository.save(ad).getId();
+    }
+
+    @Transactional
+    public void delete(Long memberId, Long adId) {
+        StoreAd ad = storeAdRepository.findById(adId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.AD_NOT_FOUND));
+
+        if (!ad.isOwnedBy(memberId)) { // 판단은 도메인 객체에게 묻는다
+            throw new BusinessException(ErrorCode.AD_ACCESS_DENIED);
+        }
+        ad.softDelete(); // 물리 삭제 금지 — 광고 이력은 정산 근거
+    }
+}

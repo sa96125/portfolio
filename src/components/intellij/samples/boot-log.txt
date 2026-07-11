@@ -1,0 +1,15 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.4)
+
+INFO  --- [           main] c.o.thinq.StoreAdApplication   : Starting StoreAdApplication
+INFO  --- [           main] o.s.b.w.embedded.tomcat        : Tomcat initialized with port 8080 (http)
+INFO  --- [           main] o.hibernate.jpa.internal       : HHH000204: Processing PersistenceUnit
+INFO  --- [           main] c.o.thinq.config.SecurityConfig: deny-by-default filter chain registered
+INFO  --- [           main] o.s.b.w.embedded.tomcat        : Tomcat started on port 8080 (http)
+INFO  --- [           main] c.o.thinq.StoreAdApplication   : Started StoreAdApplication in 3.42 seconds

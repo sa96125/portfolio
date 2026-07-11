@@ -1,4 +1,4 @@
-export type WindowKind = "finder" | "viewer" | "pdf" | "video" | "safari" | "notes" | "music" | "photos" | "vscode" | "docker" | "help";
+export type WindowKind = "finder" | "viewer" | "pdf" | "video" | "safari" | "notes" | "music" | "photos" | "vscode" | "docker" | "intellij";
 
 export interface WindowPayload {
   folderId?: string;

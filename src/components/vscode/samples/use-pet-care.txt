@@ -1,0 +1,60 @@
+/**
+ * 커스텀 훅 — 서버 상태는 React Query, 검증은 Zod, UI는 모른다
+ *
+ * LG ThinQ 펫 케어 서비스 프론트 리딩 시절의 코드 스타일.
+ * 원칙: 컴포넌트는 데이터가 "어떻게 오는지" 모른 채 결과만 소비한다.
+ */
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+
+/* 서버 응답은 신뢰하지 않는다 — 경계에서 검증 */
+const PetSchema = z.object({
+  id: z.number(),
+  name: z.string().min(1),
+  species: z.enum(["dog", "cat"]),
+  todayFeedCount: z.number().int().nonnegative(),
+  waterIntakeMl: z.number().nonnegative(),
+});
+export type Pet = z.infer<typeof PetSchema>;
+
+/* 쿼리 키는 팩토리로 한 곳에서 — 오타로 인한 캐시 미스 방지 */
+export const petKeys = {
+  all: ["pets"] as const,
+  detail: (id: number) => [...petKeys.all, id] as const,
+};
+
+export function usePet(petId: number) {
+  return useQuery({
+    queryKey: petKeys.detail(petId),
+    queryFn: async () => {
+      const res = await fetch(`/api/pets/${petId}`);
+      if (!res.ok) throw new Error(`pet ${petId}: ${res.status}`);
+      return PetSchema.parse(await res.json()); // 경계 검증
+    },
+    staleTime: 30_000, // 급식량은 실시간성이 낮다 — 불필요한 리페치 억제
+  });
+}
+
+export function useFeedPet(petId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => fetch(`/api/pets/${petId}/feed`, { method: "POST" }),
+
+    /* 낙관적 업데이트 — 버튼 반응은 즉시, 실패하면 롤백 */
+    onMutate: async () => {
+      await qc.cancelQueries({ queryKey: petKeys.detail(petId) });
+      const prev = qc.getQueryData<Pet>(petKeys.detail(petId));
+      if (prev) {
+        qc.setQueryData<Pet>(petKeys.detail(petId), {
+          ...prev,
+          todayFeedCount: prev.todayFeedCount + 1,
+        });
+      }
+      return { prev };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(petKeys.detail(petId), ctx.prev);
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: petKeys.detail(petId) }),
+  });
+}

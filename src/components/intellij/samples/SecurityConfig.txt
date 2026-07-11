@@ -1,0 +1,33 @@
+/**
+ * LG 본사 보안 취약점 검증 11개 항목을 통과한 구성.
+ * 원칙: 기본 거부(deny-by-default) — 화이트리스트만 연다.
+ */
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtFilter;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)          // 세션리스 JWT — CSRF 표면 제거
+                .sessionManagement(s ->
+                        s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(h -> h
+                        .contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'"))
+                        .frameOptions(FrameOptionsConfig::deny)) // 클릭재킹 차단
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
+                        .anyRequest().authenticated())           // 나머지는 전부 잠근다
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12); // 기본 강도(10)보다 올려서
+    }
+}

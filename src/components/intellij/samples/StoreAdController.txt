@@ -1,0 +1,38 @@
+/**
+ * 컨트롤러는 얇게 — 인증·검증·위임만 한다.
+ * 비즈니스 규칙은 Service, 영속성은 Repository의 몫.
+ *
+ * LG ThinQ 우리상가 — 백엔드 리딩 시절의 코드 스타일.
+ */
+@RestController
+@RequestMapping("/api/v1/store-ads")
+@RequiredArgsConstructor
+public class StoreAdController {
+
+    private final StoreAdService storeAdService;
+
+    @GetMapping
+    public ApiResponse<Page<StoreAdResponse>> list(
+            @AuthenticationPrincipal LoginUser user,
+            @ParameterObject Pageable pageable) {
+        return ApiResponse.ok(
+                storeAdService.findVisibleAds(user.complexId(), pageable));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<Long> create(
+            @AuthenticationPrincipal LoginUser user,
+            @Valid @RequestBody StoreAdCreateRequest request) {
+        // @Valid 실패는 GlobalExceptionHandler가 400 + 필드별 사유로 응답
+        return ApiResponse.ok(storeAdService.create(user.memberId(), request));
+    }
+
+    @DeleteMapping("/{adId}")
+    public ApiResponse<Void> delete(
+            @AuthenticationPrincipal LoginUser user,
+            @PathVariable Long adId) {
+        storeAdService.delete(user.memberId(), adId); // 소유권 검증은 서비스에서
+        return ApiResponse.ok();
+    }
+}
