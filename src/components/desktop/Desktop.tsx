@@ -18,6 +18,8 @@ const MusicApp = lazy(() => import("../music/MusicApp"));
 const PhotosApp = lazy(() => import("../photos/PhotosApp"));
 const PdfViewerApp = lazy(() => import("../viewer/PdfViewerApp"));
 const DataPipelineViewerApp = lazy(() => import("../viewer/DataPipelineViewerApp"));
+const VSCodeApp = lazy(() => import("../vscode/VSCodeApp"));
+const DockerApp = lazy(() => import("../docker/DockerApp"));
 
 function renderWindowContent(win: WindowState) {
   switch (win.kind) {
@@ -54,6 +56,10 @@ function renderWindowContent(win: WindowState) {
       );
     case "safari":
       return <Suspense fallback={null}><SafariApp /></Suspense>;
+    case "vscode":
+      return <Suspense fallback={null}><VSCodeApp /></Suspense>;
+    case "docker":
+      return <Suspense fallback={null}><DockerApp /></Suspense>;
     case "notes":
       return <Suspense fallback={null}><NotesApp /></Suspense>;
     case "music":

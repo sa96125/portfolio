@@ -30,8 +30,8 @@ const MAX_SCALE = 1.35;
 const APPS: DockApp[] = [
   { id: "finder",   label: "Finder",              icon: "/dock-icons/finder.png",   window: { kind: "finder",  title: "프로젝트", width: 860,  height: 540 } },
   { id: "safari",   label: "Safari",              icon: "/dock-icons/safari.png",   window: { kind: "safari",  title: "Safari",  width: 1024, height: 680 } },
-  { id: "vscode",   label: "Visual Studio Code",  icon: "/dock-icons/vscode.png" },
-  { id: "docker",   label: "Docker",              icon: "/dock-icons/docker.png" },
+  { id: "vscode",   label: "Visual Studio Code",  icon: "/dock-icons/vscode.png",   window: { kind: "vscode",  title: "portfolio — Visual Studio Code", width: 1100, height: 700 } },
+  { id: "docker",   label: "Docker",              icon: "/dock-icons/docker.png",   window: { kind: "docker",  title: "Docker Desktop", width: 1040, height: 660 } },
   { id: "intellij", label: "IntelliJ IDEA",       icon: "/dock-icons/intellij.png" },
   { id: "datagrip", label: "DataGrip",            icon: "/dock-icons/datagrip.png" },
   { id: "photos",   label: "사진",                icon: "/dock-icons/photos.png",   window: { kind: "photos",  title: "사진",    width: 960,  height: 620 } },
