@@ -24,8 +24,8 @@ interface DockApp {
 const ICON_SIZE = 50;
 const GAP = 4;
 const PAD = 10;
-const MAGNIFY_RANGE = 130;
-const MAX_SCALE = 1.35;
+const MAGNIFY_RANGE = 110;
+const MAX_SCALE = 1.18;
 
 const APPS: DockApp[] = [
   { id: "finder",   label: "Finder",              icon: "/dock-icons/finder.png",   window: { kind: "finder",  title: "프로젝트", width: 860,  height: 540 } },
