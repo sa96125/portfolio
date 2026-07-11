@@ -24,8 +24,8 @@ interface DockApp {
 const ICON_SIZE = 50;
 const GAP = 4;
 const PAD = 10;
-const MAGNIFY_RANGE = 110;
-const MAX_SCALE = 1.18;
+const MAGNIFY_RANGE = 130;
+const MAX_SCALE = 1.35;
 
 const APPS: DockApp[] = [
   { id: "finder",   label: "Finder",              icon: "/dock-icons/finder.png",   window: { kind: "finder",  title: "프로젝트", width: 860,  height: 540 } },
@@ -33,7 +33,7 @@ const APPS: DockApp[] = [
   { id: "vscode",   label: "Visual Studio Code",  icon: "/dock-icons/vscode.png",   window: { kind: "vscode",  title: "portfolio — Visual Studio Code", width: 1100, height: 700 } },
   { id: "docker",   label: "Docker",              icon: "/dock-icons/docker.png",   window: { kind: "docker",  title: "Docker Desktop", width: 1040, height: 660 } },
   { id: "intellij", label: "IntelliJ IDEA",       icon: "/dock-icons/intellij.png", window: { kind: "intellij", title: "storead-api — IntelliJ IDEA", width: 1080, height: 700 } },
-  { id: "dbeaver",  label: "DBeaver",             icon: "/dock-icons/dbeaver.png" },
+  { id: "datagrip", label: "DataGrip",            icon: "/dock-icons/datagrip.png" },
   { id: "photos",   label: "사진",                icon: "/dock-icons/photos.png",   window: { kind: "photos",  title: "사진",    width: 960,  height: 620 } },
   { id: "notes",    label: "메모",                icon: "/dock-icons/notes.png",    window: { kind: "notes",   title: "메모",    width: 860,  height: 540 }, badge: 1, bounce: true },
   { id: "music",    label: "음악",                icon: "/dock-icons/music.png",    window: { kind: "music",   title: "음악",    width: 960,  height: 600 } },
