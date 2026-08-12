@@ -208,9 +208,9 @@ export default function PdfViewerApp() {
           <SubTitle>1. 평가 체계 구축</SubTitle>
           <Text>
             프롬프트를 살짝 바꿔도 결과가 달라져서, 기존에 잘 나왔던 항목 테스트가 어려웠습니다.
-            다양한 케이스 · 실패 케이스 각각 500개씩 모아 <strong>LLM as Judge</strong> 평가셋을
-            검증했습니다. <strong>Recall</strong>과 <strong>Ranking</strong>을 평가기준으로
-            삼았습니다. (잘 찾아오는지, 상위에 랭크되어 있는지)
+            게시판 5개에서 각 200개, 까다로운 케이스 50개씩 — 총 <strong>1,250개 평가셋</strong>을
+            만들어 사람이 직접 평가했습니다. <strong>Recall</strong>과 <strong>Ranking</strong>을
+            평가기준으로 삼았습니다. (잘 찾아오는지, 상위에 랭크되어 있는지)
           </Text>
         </Section>
 
@@ -218,7 +218,7 @@ export default function PdfViewerApp() {
           <SubTitle>2. 인프라 비용 절감</SubTitle>
           <Text>
             보수적인 분위기, 한정된 자원으로 인프라를 사용해서 성과를 내야 했습니다.
-            GCP Spot 정책으로 A100-40G를 월 24만원에 약 60% 비용 절감하여 개발 용도로 사용했습니다.
+            GCP Spot 정책으로 A100-40G를 월 30만원에 약 60% 비용 절감하여 개발 용도로 사용했습니다.
             Qwen3 32B 양자화 모델을 <strong>vLLM</strong>으로 서빙, <strong>Unsloth</strong>로
             파인튜닝 가능했습니다.
           </Text>
