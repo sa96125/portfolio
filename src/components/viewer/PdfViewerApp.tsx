@@ -127,7 +127,7 @@ export default function PdfViewerApp() {
             <CdrLabel>Context</CdrLabel>
             <List>
               <li>모델의 지식과 사고능력을 활용하고, 도메인 지식만 학습</li>
-              <li>월 30만원 이하로 GPU 대여 → 풀 파인튜닝 불가</li>
+              <li>GPU 대여 — 14B는 월 8만원대, 32B는 월 30만원 → 풀 파인튜닝 불가</li>
               <li>LoRA/QLoRA 계열은 어댑터만 학습하니 보존된다는 당시 통념</li>
             </List>
           </CdrBlock>
