@@ -38,7 +38,7 @@ export default function PdfViewerApp() {
             <MetricLabel>검색정확도</MetricLabel>
           </Metric>
           <Metric>
-            <MetricValue>64%</MetricValue>
+            <MetricValue>90%</MetricValue>
             <MetricLabel>AI 개발 운영비 절감</MetricLabel>
           </Metric>
         </MetricRow>
