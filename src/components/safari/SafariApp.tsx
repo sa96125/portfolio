@@ -30,12 +30,6 @@ const INITIAL_TABS: Tab[] = [
     hideUrl: true,
   },
   {
-    id: "4",
-    title: "걸어서 SiC 속으로 - SK실트론 CSS",
-    url: "https://www.youtube.com/embed/-AkxcSb9lII",
-    hideUrl: true,
-  },
-  {
     id: "6",
     title: "생산현장의 생산정보 데이터베이스",
     url: "https://www.skcareersjournal.com/3432",
