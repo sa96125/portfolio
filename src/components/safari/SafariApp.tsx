@@ -27,21 +27,11 @@ const INITIAL_TABS: Tab[] = [
     title: "브리핀 - Briefin",
     url: "https://www.briefin.co.kr/",
   },
-  {
-    id: "6",
-    title: "생산현장의 생산정보 데이터베이스",
-    url: "https://www.skcareersjournal.com/3432",
-  },
-  {
-    id: "7",
-    title: "SK실트론 - SK커리어스저널",
-    url: "https://www.skcareersjournal.com/3392",
-  },
 ];
 
 export default function SafariApp() {
   const [tabs, setTabs] = useState<Tab[]>(INITIAL_TABS);
-  const [activeTabId, setActiveTabId] = useState("7");
+  const [activeTabId, setActiveTabId] = useState("3");
   const [addressValue, setAddressValue] = useState(INITIAL_TABS[INITIAL_TABS.length - 1].url);
   const addressRef = useRef<HTMLInputElement>(null);
 
