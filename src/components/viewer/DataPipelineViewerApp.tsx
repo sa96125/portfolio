@@ -19,7 +19,6 @@ import {
   CdrBlock,
   CdrLabel,
   PlusMinusList,
-  NextArrow,
 } from "./pdf-styles";
 
 /** macOS Preview 스타일 PDF 뷰어 — card2.md 기반 */
@@ -181,38 +180,11 @@ export default function DataPipelineViewerApp() {
           </CdrBlock>
         </Section>
 
-        {/* Step 7~8 */}
-        <Section>
-          <StepTitle>
-            Step 7~8. AI 도슨트 해설 및 온톨로지 설계
-          </StepTitle>
-          <CdrBlock>
-            <CdrLabel>Decision</CdrLabel>
-            <List>
-              <li>
-                사유원 도메인 온톨로지 설계 — POI(정자, 전망대, 수목 등), 코스,
-                계절성, 난이도, 인접 관계 구조화
-              </li>
-              <li>
-                복잡한 질의가 없는 도메인 → GraphDB 도입 없이{" "}
-                <strong>시스템 프롬프트 + 관계형 모델링</strong>으로 운영
-              </li>
-              <li>
-                AI 추천 경로 / 도슨트 해설 초안 자동 생성
-              </li>
-            </List>
-          </CdrBlock>
-          <NextArrow>
-            → "필요 이상으로 무거운 기술 도입을 피하고, 도메인 복잡도에 맞는
-            수준으로 설계"
-          </NextArrow>
-        </Section>
-
         <SectionDivider>문제해결</SectionDivider>
 
-        {/* 문제해결 1 */}
+        {/* 문제해결 */}
         <Section>
-          <SubTitle>1. 휴대폰 GPS 정밀도 한계 + 산속 신호 약함</SubTitle>
+          <SubTitle>휴대폰 GPS 정밀도 한계 + 산속 신호 약함</SubTitle>
           <Text>
             도슨트 네비게이션은 cm 단위 정밀도가 요구되는데, 휴대폰 내장 GPS는
             5~10m 오차에 산속에서는 신호 끊김이 발생했습니다.
@@ -229,46 +201,6 @@ export default function DataPipelineViewerApp() {
           </List>
         </Section>
 
-        {/* 문제해결 2 */}
-        <Section>
-          <SubTitle>2. 입장 시간대 트래픽 집중 + 대량 데이터 처리</SubTitle>
-          <Text>
-            사유원은 일평균 400~600명이 방문하고 입장이 오전 10시대에
-            집중됩니다. 오픈 시 이 트래픽과 수백 개 POI, 다국어 음성 수천 개를
-            감당할 수 있도록 설계 단계에서 대비했습니다.
-          </Text>
-          <List>
-            <li>위치 추적 / POI 진입 감지: 클라이언트 처리 → 서버 부하 최소화</li>
-            <li>도슨트 음성 / 경로: 정적 파일은 CDN/스토리지 직접 제공</li>
-            <li>공간 검색: PostGIS GiST 인덱스로 가속</li>
-            <li>자주 조회되는 경로: Redis 캐싱</li>
-            <li>백엔드: 가벼운 API만 담당</li>
-          </List>
-          <NextArrow>
-            → "실시간 처리와 정적 자원을 명확히 분리"해 단순한 인프라로도
-            안정 운영이 가능한 구조 확보
-          </NextArrow>
-        </Section>
-
-        {/* 문제해결 3 */}
-        <Section>
-          <SubTitle>3. 4개국어 도슨트 운영의 복잡도</SubTitle>
-          <Text>
-            4개국어 × POI 수 = 수천 개 음성 파일 관리. 어르신 방문객 + 외국인
-            통역 인력 부담을 동시에 해결해야 했습니다.
-          </Text>
-          <List>
-            <li>
-              AI 해설 초안 자동 생성 → 현업 검수 → <strong>ElevenLabs</strong>{" "}
-              4개국어 사전 합성
-            </li>
-            <li>파일 명명 규칙 표준화로 관리자 도구에서 일괄 갱신</li>
-          </List>
-          <NextArrow>
-            → "AI 즉시 응답"이 아닌 "검수 후 사전 합성" 구조로 어르신 방문객
-            대상 서비스의 안정성 확보
-          </NextArrow>
-        </Section>
       </Page>
     </Container>
   );
