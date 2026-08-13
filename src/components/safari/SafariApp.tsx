@@ -24,10 +24,8 @@ const INITIAL_TABS: Tab[] = [
   },
   {
     id: "3",
-    title: "맛칩Chip투어 - 실리콘 웨이퍼 편",
-    // watch URL은 iframe 차단이라 embed URL 사용
-    url: "https://www.youtube.com/embed/zgx6TYsT83k",
-    hideUrl: true,
+    title: "브리핀 - Briefin",
+    url: "https://www.briefin.co.kr/",
   },
   {
     id: "6",
@@ -44,7 +42,7 @@ const INITIAL_TABS: Tab[] = [
 export default function SafariApp() {
   const [tabs, setTabs] = useState<Tab[]>(INITIAL_TABS);
   const [activeTabId, setActiveTabId] = useState("7");
-  const [addressValue, setAddressValue] = useState(INITIAL_TABS[5].url);
+  const [addressValue, setAddressValue] = useState(INITIAL_TABS[INITIAL_TABS.length - 1].url);
   const addressRef = useRef<HTMLInputElement>(null);
 
   const activeTab = tabs.find((t) => t.id === activeTabId);
