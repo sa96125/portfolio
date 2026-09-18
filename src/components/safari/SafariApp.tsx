@@ -25,7 +25,7 @@ const INITIAL_TABS: Tab[] = [
   {
     id: "3",
     title: "이수그룹",
-    url: "https://www.isu.co.kr/upload/new_board/B1784791477700.pdf",
+    url: "https://www.isu.co.kr/kor/culture/paper.jsp",
   },
 ];
 
