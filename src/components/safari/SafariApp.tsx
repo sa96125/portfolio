@@ -19,13 +19,13 @@ const INITIAL_TABS: Tab[] = [
   },
   {
     id: "2",
-    title: "SK실트론",
-    url: "https://www.sksiltron.com/ko/company/summary.do",
+    title: "브리핀 - Briefin",
+    url: "https://www.briefin.co.kr/",
   },
   {
     id: "3",
-    title: "브리핀 - Briefin",
-    url: "https://www.briefin.co.kr/",
+    title: "이수그룹",
+    url: "https://www.isu.co.kr/kor/culture/paper.jsp",
   },
 ];
 
